@@ -1,12 +1,18 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
-  //get out
   output: "export",
-  distDir: "out",
+
+  // Fix CSS in static export
+  trailingSlash: true,
+
   images: {
     unoptimized: true,
+  },
+
+  // Ensure CSS is properly handled in static export
+  experimental: {
+    optimizeCss: false,
   },
 };
 
