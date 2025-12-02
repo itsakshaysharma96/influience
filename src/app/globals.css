@@ -8,20 +8,15 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-poppins: var(--font-poppins);
-  --font-inter: var(--font-inter);
+  --font-montserrat: var(--font-montserrat);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-poppins), sans-serif;
+  font-family: var(--font-montserrat), sans-serif;
 }
 
-.font-poppins {
-  font-family: var(--font-poppins), sans-serif;
-}
-
-.font-inter {
-  font-family: var(--font-inter), sans-serif;
+.font-montserrat {
+  font-family: var(--font-montserrat), sans-serif;
 }

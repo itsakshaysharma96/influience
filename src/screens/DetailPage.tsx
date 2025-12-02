@@ -47,7 +47,7 @@ export default function DetailPage() {
               className="object-contain"
             />
           </div>
-          <h1 className="font-inter font-medium text-[32px] md:text-[45px] text-white tracking-[0.5px] leading-tight max-w-[667px]">
+          <h1 className="font-montserrat font-medium text-[32px] md:text-[45px] text-white tracking-[0.5px] leading-tight max-w-[667px]">
             Optimizing Performance in Industrial Environments: The Honeywell Granit™ Ultra Series
           </h1>
         </div>
@@ -70,15 +70,15 @@ export default function DetailPage() {
           <div className="flex items-start justify-between gap-12">
             {/* Left Column - Description and Key Highlights */}
             <div className="max-w-[813px]">
-              <p className="font-poppins text-[16px] md:text-[20px] text-black tracking-[0.2px] leading-relaxed mb-12">
+              <p className="font-montserrat text-[16px] md:text-[20px] text-black tracking-[0.2px] leading-relaxed mb-12">
                 This eBook explores how Honeywell&apos;s Granit™ Ultra series empowers warehouses, manufacturing units, and logistics hubs to overcome scanning, durability, and operational challenges. It demonstrates how next-generation rugged scanners drive accuracy, speed, and reliability; helping businesses achieve peak performance under the toughest industrial conditions.
               </p>
 
-              <h2 className="font-inter font-bold text-[24px] md:text-[30px] text-black tracking-[0.3px] mb-6">
+              <h2 className="font-montserrat font-bold text-[24px] md:text-[30px] text-black tracking-[0.3px] mb-6">
                 Key Highlights
               </h2>
 
-              <div className="font-poppins text-[16px] md:text-[20px] text-black tracking-[0.2px] leading-relaxed space-y-4">
+              <div className="font-montserrat text-[16px] md:text-[20px] text-black tracking-[0.2px] leading-relaxed space-y-4">
                 <p>
                   <span className="font-bold">Enhanced Scanning Performance:</span>{" "}
                   Captures even damaged or low-contrast barcodes quickly and accurately with advanced imaging technology.
@@ -104,12 +104,12 @@ export default function DetailPage() {
 
             {/* Right Column - Form */}
             <div className="max-w-[462px]">
-              <h3 className="font-inter font-medium text-[24px] md:text-[30px] text-black tracking-[0.3px] mb-6">
+              <h3 className="font-montserrat font-medium text-[24px] md:text-[30px] text-black tracking-[0.3px] mb-6">
                 Fill below to access the eBook:
               </h3>
 
               <form onSubmit={handleSubmit} className="bg-[#f7f7f7] rounded-[5px] shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] p-8">
-                <label htmlFor="email" className="font-poppins text-[16px] md:text-[18px] text-black tracking-[0.18px] block mb-4">
+                <label htmlFor="email" className="font-montserrat text-[16px] md:text-[18px] text-black tracking-[0.18px] block mb-4">
                   Your Email
                 </label>
                 <input
@@ -118,7 +118,7 @@ export default function DetailPage() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="your@email.com"
-                  className="bg-[rgba(50,88,155,0.36)] h-[65px] w-full rounded-[5px] px-4 font-poppins text-[16px] text-black placeholder:text-[rgba(0,0,0,0.32)] outline-none mb-6"
+                  className="bg-[rgba(50,88,155,0.36)] h-[65px] w-full rounded-[5px] px-4 font-montserrat text-[16px] text-black placeholder:text-[rgba(0,0,0,0.32)] outline-none mb-6"
                   required
                 />
 
@@ -131,7 +131,7 @@ export default function DetailPage() {
                     className="mt-1 w-[13px] h-[14px] bg-[#dcdbdb] border border-[rgba(0,0,0,0.25)] rounded cursor-pointer shrink-0"
                     required
                   />
-                  <label htmlFor="agreement" className="font-poppins text-[14px] md:text-[16px] text-black tracking-[0.16px] leading-relaxed">
+                  <label htmlFor="agreement" className="font-montserrat text-[14px] md:text-[16px] text-black tracking-[0.16px] leading-relaxed">
                     Please note that by accessing the advertiser&apos;s content, your data may be transmitted to the advertiser to fulfill the offer. Subscribers also have the ability to track offer fulfillment by email, phone, or letter. See the{" "}
                     <a href="/privacy" className="text-[#152a59] hover:underline">
                       Privacy Policy
@@ -142,7 +142,7 @@ export default function DetailPage() {
 
                 <button
                   type="submit"
-                  className="bg-[#152a59] h-[65px] w-full rounded-[5px] font-poppins text-[16px] text-white tracking-[0.16px] hover:bg-[#1a3a6b] transition-colors"
+                  className="bg-[#152a59] h-[65px] w-full rounded-[5px] font-montserrat text-[16px] text-white tracking-[0.16px] hover:bg-[#1a3a6b] transition-colors"
                 >
                   Get My Copy!
                 </button>
@@ -155,7 +155,7 @@ export default function DetailPage() {
       {/* Footer */}
       <footer className="bg-[#1d252f] w-full py-8">
         <div className="max-w-[1920px] mx-auto px-4 text-center">
-          <p className="font-poppins font-light text-[16px] md:text-[20px] text-white tracking-[0.2px] capitalize">
+          <p className="font-montserrat font-light text-[16px] md:text-[20px] text-white tracking-[0.2px] capitalize">
             © 2025 Tech Influence All Rights Reserved
           </p>
         </div>

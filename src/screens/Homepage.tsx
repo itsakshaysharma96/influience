@@ -143,15 +143,15 @@ export default function Homepage() {
               className="object-contain"
             />
           </div>
-          <span className="font-inter text-[14px] md:text-[18px] text-white hover:opacity-80 transition-opacity cursor-pointer">About Us</span>
-          <span className="font-inter text-[14px] md:text-[18px] text-white hover:opacity-80 transition-opacity cursor-pointer">Blogs</span>
-          <span className="font-inter text-[14px] md:text-[18px] text-white hover:opacity-80 transition-opacity cursor-pointer">Contact Us</span>
+          <span className="font-montserrat text-[14px] md:text-[18px] text-white hover:opacity-80 transition-opacity cursor-pointer">About Us</span>
+          <span className="font-montserrat text-[14px] md:text-[18px] text-white hover:opacity-80 transition-opacity cursor-pointer">Blogs</span>
+          <span className="font-montserrat text-[14px] md:text-[18px] text-white hover:opacity-80 transition-opacity cursor-pointer">Contact Us</span>
         </nav>
       </header>
 
       {/* Hero Section */}
       <section className="bg-[#152a59] min-h-[617px] w-full flex flex-col items-center justify-center px-4 py-16">
-        <h1 className="font-inter font-semibold text-[32px] md:text-[50px] text-center text-white tracking-[0.5px] max-w-[865px] mb-8 leading-tight">
+        <h1 className="font-montserrat font-semibold text-[32px] md:text-[50px] text-center text-white tracking-[0.5px] max-w-[865px] mb-8 leading-tight">
           Content Library of Technology Shaping Businesses Today!
         </h1>
         <form onSubmit={handleSearch} className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 max-w-[600px] w-full">
@@ -161,11 +161,11 @@ export default function Homepage() {
               placeholder="Search for whitepapers, topics, and case studies"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full h-full outline-none text-black font-poppins text-[14px] md:text-[16px] placeholder:text-black/60"
+              className="w-full h-full outline-none text-black font-montserrat text-[14px] md:text-[16px] placeholder:text-black/60"
             />
           </div>
           <button type="submit" className="bg-black h-[52px] rounded-[5px] w-full sm:w-[117px] flex items-center justify-center hover:bg-gray-800 transition-colors">
-            <span className="font-poppins text-[14px] md:text-[16px] text-white">Search</span>
+            <span className="font-montserrat text-[14px] md:text-[16px] text-white">Search</span>
           </button>
         </form>
       </section>
@@ -186,7 +186,7 @@ export default function Homepage() {
                 }`}
               >
                 <span
-                  className={`font-inter font-medium text-[16px] md:text-[20px] ${
+                  className={`font-montserrat font-medium text-[16px] md:text-[20px] ${
                     selectedCategory === category ? "text-white" : "text-black"
                   }`}
                 >
@@ -209,7 +209,7 @@ export default function Homepage() {
                 }`}
               >
                 <span
-                  className={`font-inter font-medium text-[16px] md:text-[20px] ${
+                  className={`font-montserrat font-medium text-[16px] md:text-[20px] ${
                     selectedCategory === category ? "text-white" : "text-black"
                   }`}
                 >
@@ -244,10 +244,10 @@ export default function Homepage() {
                       className="object-cover"
                     />
                   </div>
-                  <h3 className="font-inter font-medium text-[18px] md:text-[22px] text-black mb-4 leading-tight">
+                  <h3 className="font-montserrat font-medium text-[18px] md:text-[22px] text-black mb-4 leading-tight">
                     {item.title}
                   </h3>
-                  <p className="font-poppins text-[12px] text-black mb-4 leading-relaxed">
+                  <p className="font-montserrat text-[12px] text-black mb-4 leading-relaxed">
                     {item.description}
                   </p>
                   <div className="border-t border-gray-300 mb-4"></div>
@@ -255,7 +255,7 @@ export default function Homepage() {
                     {item.categories.map((category) => (
                       <span
                         key={category}
-                        className="bg-[#152a59] text-white text-[10px] md:text-[12px] px-2 py-1 rounded-[5px] font-inter"
+                        className="bg-[#152a59] text-white text-[10px] md:text-[12px] px-2 py-1 rounded-[5px] font-montserrat"
                       >
                         {category}
                       </span>
@@ -266,7 +266,7 @@ export default function Homepage() {
             </div>
           ) : (
             <div className="text-center py-12">
-              <p className="font-inter text-[20px] text-black">
+              <p className="font-montserrat text-[20px] text-black">
                 No content found matching your criteria. Try selecting a different category or search term.
               </p>
             </div>
@@ -277,21 +277,21 @@ export default function Homepage() {
       {/* How It Works Section */}
       <section className="bg-[#1d252f] w-full py-20">
         <div className="max-w-[1920px] mx-auto px-4 md:px-[112px]">
-          <h2 className="font-inter font-medium text-[36px] md:text-[50px] text-center text-white tracking-[0.5px] mb-12">
+          <h2 className="font-montserrat font-medium text-[36px] md:text-[50px] text-center text-white tracking-[0.5px] mb-12">
             How It Works
           </h2>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-            <p className="font-poppins font-medium text-[22px] md:text-[25px] text-white tracking-[0.3px] leading-relaxed">
+            <p className="font-montserrat font-medium text-[22px] md:text-[25px] text-white tracking-[0.3px] leading-relaxed">
               Tech-Influence is a free-to-access digital library and content subscription platform built for professionals. It offers an extensive collection of whitepapers, eBooks, case studies, guides, and articles; all curated to inform, inspire, and empower decision-making across industries.
             </p>
             <div className="space-y-6">
-              <p className="font-poppins text-[16px] md:text-[18px] text-white tracking-[0.2px] leading-relaxed">
+              <p className="font-montserrat text-[16px] md:text-[18px] text-white tracking-[0.2px] leading-relaxed">
                 You can explore our extensive library effortlessly using the search and topic filters to discover the most relevant insights for your field. Through our Preference Center, you have complete control over your communication and content choices — across Tech-Influence and our partner publications.
               </p>
-              <p className="font-poppins text-[16px] md:text-[18px] text-white tracking-[0.2px] leading-relaxed">
+              <p className="font-montserrat text-[16px] md:text-[18px] text-white tracking-[0.2px] leading-relaxed">
                 All our resources are free to access and share. In return, we ask for your consent to share your professional details with the respective authors or content providers. To learn more about how we operate and handle data, you&apos;ll find clear, jargon-free information linked below.
               </p>
-              <p className="font-poppins text-[16px] md:text-[18px] text-white tracking-[0.2px] leading-relaxed">
+              <p className="font-montserrat text-[16px] md:text-[18px] text-white tracking-[0.2px] leading-relaxed">
                 From time to time, we may email you with curated content aligned with your role and industry. You can update or change these preferences anytime using the Update Your Preferences link.
               </p>
             </div>
@@ -303,13 +303,13 @@ export default function Homepage() {
       <footer className="bg-[#1d252f] w-full py-12">
         <div className="max-w-[1920px] mx-auto px-4 md:px-[119px] w-full flex flex-col md:flex-row justify-between items-start md:items-center gap-8">
           <div className="flex flex-col gap-4">
-            <a href="/about" className="font-poppins font-light text-[16px] md:text-[20px] text-white tracking-[0.2px] capitalize hover:opacity-80 transition-opacity">About Us</a>
-            <a href="/contact" className="font-poppins font-light text-[16px] md:text-[20px] text-white tracking-[0.2px] capitalize hover:opacity-80 transition-opacity">Contact Us</a>
+            <a href="/about" className="font-montserrat font-light text-[16px] md:text-[20px] text-white tracking-[0.2px] capitalize hover:opacity-80 transition-opacity">About Us</a>
+            <a href="/contact" className="font-montserrat font-light text-[16px] md:text-[20px] text-white tracking-[0.2px] capitalize hover:opacity-80 transition-opacity">Contact Us</a>
           </div>
           <div className="flex flex-col items-start md:items-end gap-4">
-            <a href="/preferences" className="font-poppins font-light text-[16px] md:text-[20px] text-white tracking-[0.2px] capitalize hover:opacity-80 transition-opacity">Update Your Preferences</a>
-            <p className="font-poppins font-light text-[16px] md:text-[20px] text-white tracking-[0.2px] capitalize">© 2025 Tech Influence All Rights Reserved</p>
-            <a href="/privacy" className="font-poppins font-light text-[16px] md:text-[20px] text-white tracking-[0.2px] capitalize hover:opacity-80 transition-opacity">Privacy Notice</a>
+            <a href="/preferences" className="font-montserrat font-light text-[16px] md:text-[20px] text-white tracking-[0.2px] capitalize hover:opacity-80 transition-opacity">Update Your Preferences</a>
+            <p className="font-montserrat font-light text-[16px] md:text-[20px] text-white tracking-[0.2px] capitalize">© 2025 Tech Influence All Rights Reserved</p>
+            <a href="/privacy" className="font-montserrat font-light text-[16px] md:text-[20px] text-white tracking-[0.2px] capitalize hover:opacity-80 transition-opacity">Privacy Notice</a>
           </div>
         </div>
       </footer>
