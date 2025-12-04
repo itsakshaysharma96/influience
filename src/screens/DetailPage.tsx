@@ -104,7 +104,7 @@ export default function DetailPage() {
 
             {/* Right Column - Form */}
             <div className="max-w-[462px]">
-              <h3 className="font-montserrat font-medium text-[24px] md:text-[30px] text-black tracking-[0.3px] mb-6">
+              <h3 className="font-montserrat font-medium text-[20px] md:text-[25px] text-black tracking-[0.3px] mb-6">
                 Fill below to access the eBook:
               </h3>
 

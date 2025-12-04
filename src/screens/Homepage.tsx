@@ -236,12 +236,14 @@ export default function Homepage() {
                       className="object-contain"
                     />
                   </div>
-                  <div className={`${item.id === 5 || item.id === 6 ? "h-[301px]" : "h-[330px]"} w-full relative rounded-[10px] shadow-[6px_8px_21.6px_1px_rgba(0,0,0,0.25)] mb-4 overflow-hidden`}>
+                  <div className={`w-full relative  mb-4 overflow-hidden`}>
                     <Image
                       src={item.image}
                       alt={item.title}
-                      fill
-                      className="object-cover"
+
+                      height={300}
+                      width={300}
+                      className="mx-auto rounded-[10px] shadow-[6px_8px_21.6px_1px_rgba(0,0,0,0.25)] object-contain"
                     />
                   </div>
                   <h3 className="font-montserrat font-medium text-[18px] md:text-[22px] text-black mb-4 leading-tight">
