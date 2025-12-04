@@ -236,7 +236,7 @@ export default function Homepage() {
                       className="object-contain"
                     />
                   </div>
-                  <div className={`w-full relative  mb-4 overflow-hidden`}>
+                  <div className={`w-full mb-4 relative flex items-center justify-center h-110`}>
                     <Image
                       src={item.image}
                       alt={item.title}
