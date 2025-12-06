@@ -35,7 +35,7 @@ const contentItems: ContentItem[] = [
     image: imgRectangle13,
     title: "Optimizing Performance in Industrial Environments: The Honeywell Granit™ Ultra Series",
     description: "This eBook explores how Honeywell's Granit™ Ultra series empowers warehouses, manufacturing units, and logistics hubs to overcome scanning, durability, and operational challenges. It demonstrates how next-generation rugged scanners drive accuracy, speed, and reliability; helping businesses achieve peak performance under the toughest industrial conditions.",
-    categories: ["Data Center", "Servers", "Security", "Storage and Virtualization", "Data Management and Analytics", "Hardware", "IT Management"]
+    categories: ["Data Center", "Data Management and Analytics", "Security", "Storage and Virtualization", "Hardware"]
   },
   {
     id: 2,
@@ -71,7 +71,7 @@ const contentItems: ContentItem[] = [
     image: imgRectangle46,
     title: "Simplifying GenAI Development",
     description: "This eBook demonstrates how NVIDIA AI Workbench, powered by Dell Pro Max high-performance PCs, helps developers and data scientists streamline the process of building, testing, and scaling generative AI (GenAI) models. It highlights how automated setup, workload portability, and integrated productivity tools simplify GenAI workflows from local development to enterprise-scale deployment.",
-    categories: ["Data Management and Analytics", "Product Development & QA", "Emerging Tech", "Hardware"]
+    categories: ["Product Development & QA", "Emerging Tech", "Hardware", "Data Management and Analytics"]
   },
   {
     id: 6,
@@ -176,7 +176,7 @@ export default function Homepage() {
 
       {/* Category Filters */}
       <section className="w-full bg-[rgba(21,42,89,0.25)] py-12">
-        <div className="max-w-[1920px] mx-auto px-4 md:px-[162px]">
+        <div className="max-w-[1920px] mx-auto px-4 xl:px-[80px] 2xl:px-[162px]">
           {/* Primary Category Filters */}
           <div className="flex items-center justify-center gap-4 mb-8 flex-wrap">
             {primaryCategories.map((category) => (
