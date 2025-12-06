@@ -22,7 +22,7 @@ export default function DetailPage() {
   return (
     <div className="bg-white relative w-full min-h-screen">
       {/* Header */}
-      <header className="bg-[#1d252f] h-[124px] w-full flex items-center justify-between px-4 md:px-[116px] sticky top-0 z-50">
+      <header className="bg-[#1d252f] h-[124px] w-full flex items-center justify-between px-4 xl:px-[80px] 2xl:px-[162px] sticky top-0 z-50">
         <Link href="/" className="h-[62px] w-[200px] md:w-[308px] relative">
           <Image
             src={logoPath}
@@ -38,7 +38,7 @@ export default function DetailPage() {
       {/* Hero Section */}
       <section className="w-full flex flex-col md:flex-row">
         {/* Left Side - Dark Blue Panel */}
-        <div className="bg-[#152a59] h-[700px] w-full md:w-1/2 flex flex-col justify-center px-4 md:px-[118px]">
+        <div className="bg-[#152a59] h-[700px] w-full md:w-1/2 flex flex-col justify-center px-4 xl:px-[80px] 2xl:px-[162px]">
           <div className="h-[134px] w-full max-w-[250px] relative mb-8">
             <Image
               src={imgHoney1}
@@ -47,7 +47,7 @@ export default function DetailPage() {
               className="object-contain"
             />
           </div>
-          <h1 className="font-montserrat font-medium text-[32px] md:text-[45px] text-white tracking-[0.5px] leading-tight max-w-[667px]">
+          <h1 className="font-montserrat font-medium text-[32px] md:text-[40px] text-white tracking-[0.5px] leading-tight max-w-[667px]">
             Optimizing Performance in Industrial Environments: The Honeywell Granit™ Ultra Series
           </h1>
         </div>
@@ -66,7 +66,7 @@ export default function DetailPage() {
 
       {/* Content Section */}
       <section className="w-full bg-[rgba(21,42,89,0.25)] pt-16 pb-18">
-        <div className="max-w-[1920px] mx-auto px-4 md:px-[191px]">
+        <div className="max-w-[1920px] mx-auto px-4 xl:px-[80px] 2xl:px-[162px]">
           <div className="flex items-start justify-between gap-12">
             {/* Left Column - Description and Key Highlights */}
             <div className="max-w-[813px]">

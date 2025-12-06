@@ -128,7 +128,7 @@ export default function Homepage() {
   return (
     <div className="bg-white relative w-full min-h-screen">
       {/* Header */}
-      <header className="bg-[#1d252f] h-[124px] w-full flex items-center justify-between px-4 md:px-[116px] sticky top-0 z-50">
+      <header className="bg-[#1d252f] h-[124px] w-full flex items-center justify-between px-4 xl:px-[80px] 2xl:px-[162px] sticky top-0 z-50">
         <div className="h-[62px] w-[200px] md:w-[358px] relative">
           <Image
             src={logoPath}
