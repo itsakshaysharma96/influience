@@ -35,7 +35,7 @@ const contentItems: ContentItem[] = [
     image: imgRectangle13,
     title: "Optimizing Performance in Industrial Environments: The Honeywell Granit™ Ultra Series",
     description: "This eBook explores how Honeywell's Granit™ Ultra series empowers warehouses, manufacturing units, and logistics hubs to overcome scanning, durability, and operational challenges. It demonstrates how next-generation rugged scanners drive accuracy, speed, and reliability; helping businesses achieve peak performance under the toughest industrial conditions.",
-    categories: ["Data Center", "Servers", "Security", "Storage and Virtualization", "Data Management and Analytics", "Hardware", "Product Development & QA", "IT Management"]
+    categories: ["Data Center", "Servers", "Security", "Storage and Virtualization", "Data Management and Analytics", "Hardware", "IT Management"]
   },
   {
     id: 2,
@@ -91,7 +91,11 @@ const primaryCategories = [
   "Storage and Virtualization",
   "Data Management and Analytics",
   "Security",
-  "Hardware"
+  "Hardware",
+  "Emerging Tech",
+  "Technology",
+  "Product Development & QA",
+  "IT Management"
 ];
 
 const secondaryCategories = [
@@ -144,7 +148,7 @@ export default function Homepage() {
             />
           </div>
           <span className="font-montserrat text-[14px] md:text-[18px] text-white hover:opacity-80 transition-opacity cursor-pointer">About Us</span>
-          <span className="font-montserrat text-[14px] md:text-[18px] text-white hover:opacity-80 transition-opacity cursor-pointer">Blogs</span>
+          {/* <span className="font-montserrat text-[14px] md:text-[18px] text-white hover:opacity-80 transition-opacity cursor-pointer">Blogs</span> */}
           <span className="font-montserrat text-[14px] md:text-[18px] text-white hover:opacity-80 transition-opacity cursor-pointer">Contact Us</span>
         </nav>
       </header>
@@ -179,14 +183,14 @@ export default function Homepage() {
               <button
                 key={category}
                 onClick={() => setSelectedCategory(category)}
-                className={`h-[50px] rounded-[5px] px-4 md:px-6 flex items-center transition-colors ${
+                className={`h-[50px] rounded-[5px] px-2 md:px-4 flex items-center transition-colors ${
                   selectedCategory === category
                     ? "bg-black"
                     : "bg-transparent hover:bg-gray-200"
                 }`}
               >
                 <span
-                  className={`font-montserrat font-medium text-[16px] md:text-[20px] ${
+                  className={`font-montserrat font-medium text-[16px] md:text-[18px] ${
                     selectedCategory === category ? "text-white" : "text-black"
                   }`}
                 >
@@ -197,12 +201,12 @@ export default function Homepage() {
           </div>
 
           {/* Secondary Category Filters */}
-          <div className="flex items-center justify-center gap-4 mb-12 flex-wrap">
+          {/* <div className="flex items-center justify-center gap-4 mb-12 flex-wrap">
             {secondaryCategories.map((category) => (
               <button
                 key={category}
                 onClick={() => setSelectedCategory(category)}
-                className={`h-[50px] rounded-[5px] px-4 md:px-6 flex items-center transition-colors ${
+                className={`h-[50px] rounded-[5px] px-2 md:px-6 flex items-center transition-colors ${
                   selectedCategory === category
                     ? "bg-black"
                     : "bg-transparent hover:bg-gray-200"
@@ -217,7 +221,7 @@ export default function Homepage() {
                 </span>
               </button>
             ))}
-          </div>
+          </div> */}
 
           {/* Content Grid */}
           {filteredContent.length > 0 ? (
