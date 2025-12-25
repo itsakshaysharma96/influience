@@ -3,6 +3,8 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import Header from "./components/Header";
+import Footer from "./components/Footer";
 
 // Images from public folder
 const imgRectangle13 = "/images/homepage/rectangle13.png";
@@ -13,8 +15,6 @@ const imgRectangle46 = "/images/homepage/rectangle46.png";
 const imgDellLogo21 = "/images/homepage/dell-logo.png";
 const imgRectangle26 = "/images/homepage/rectangle26.png";
 const imgRectangle48 = "/images/homepage/rectangle48.png";
-const imgSearchWhite2 = "/images/homepage/search-white.png";
-const logoPath = "/images/logo.png";
 
 // Content data structure
 interface ContentItem {
@@ -127,31 +127,7 @@ export default function Homepage() {
   };
   return (
     <div className="bg-white relative w-full min-h-screen">
-      {/* Header */}
-      <header className="bg-[#1d252f] h-[124px] w-full flex items-center justify-between px-4 xl:px-[80px] 2xl:px-[162px] sticky top-0 z-50">
-        <div className="h-[62px] w-[200px] md:w-[358px] relative">
-          <Image
-            src={logoPath}
-            alt="Tech Influence Logo"
-            fill
-            className="object-contain"
-            priority
-          />
-        </div>
-        <nav className="flex items-center gap-4 md:gap-8">
-          <div className="w-[22px] h-[22px] md:w-[36px] md:h-[36px] relative cursor-pointer">
-            <Image
-              src={imgSearchWhite2}
-              alt="Search"
-              fill
-              className="object-contain"
-            />
-          </div>
-          <span className="font-montserrat text-[14px] md:text-[18px] text-white hover:opacity-80 transition-opacity cursor-pointer">About Us</span>
-          {/* <span className="font-montserrat text-[14px] md:text-[18px] text-white hover:opacity-80 transition-opacity cursor-pointer">Blogs</span> */}
-          <span className="font-montserrat text-[14px] md:text-[18px] text-white hover:opacity-80 transition-opacity cursor-pointer">Contact Us</span>
-        </nav>
-      </header>
+      <Header />
 
       {/* Hero Section */}
       <section className="bg-[#152a59] min-h-[617px] w-full flex flex-col items-center justify-center px-4 py-16">
@@ -165,7 +141,7 @@ export default function Homepage() {
               placeholder="Search for whitepapers, topics, and case studies"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full h-full outline-none text-black font-montserrat text-[14px] md:text-[16px] placeholder:text-black/60"
+              className="w-full h-full outline-none text-black py-5 font-montserrat text-[14px] md:text-[16px] placeholder:text-black/60"
             />
           </div>
           <button type="submit" className="bg-black h-[52px] rounded-[5px] w-full sm:w-[117px] flex items-center justify-center hover:bg-gray-800 transition-colors">
@@ -305,20 +281,7 @@ export default function Homepage() {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="bg-[#1d252f] w-full py-12">
-        <div className="max-w-[1920px] mx-auto px-4 md:px-[119px] w-full flex flex-col md:flex-row justify-between items-start md:items-center gap-8">
-          <div className="flex flex-col gap-4">
-            <a href="/about" className="font-montserrat font-light text-[16px] md:text-[20px] text-white tracking-[0.2px] capitalize hover:opacity-80 transition-opacity">About Us</a>
-            <a href="/contact" className="font-montserrat font-light text-[16px] md:text-[20px] text-white tracking-[0.2px] capitalize hover:opacity-80 transition-opacity">Contact Us</a>
-          </div>
-          <div className="flex flex-col items-start md:items-end gap-4">
-            <a href="/preferences" className="font-montserrat font-light text-[16px] md:text-[20px] text-white tracking-[0.2px] capitalize hover:opacity-80 transition-opacity">Update Your Preferences</a>
-            <p className="font-montserrat font-light text-[16px] md:text-[20px] text-white tracking-[0.2px] capitalize">© 2025 Tech Influence All Rights Reserved</p>
-            <a href="/privacy" className="font-montserrat font-light text-[16px] md:text-[20px] text-white tracking-[0.2px] capitalize hover:opacity-80 transition-opacity">Privacy Notice</a>
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 }
