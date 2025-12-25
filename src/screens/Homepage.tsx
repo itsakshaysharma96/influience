@@ -1,121 +1,142 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 
-// Images from public folder
-const imgRectangle13 = "/images/homepage/rectangle13.png";
-const imgRectangle36 = "/images/homepage/rectangle36.png";
-const imgHoneyWell1 = "/images/homepage/honeywell.png";
-const imgRectangle25 = "/images/homepage/rectangle25.png";
-const imgRectangle46 = "/images/homepage/rectangle46.png";
-const imgDellLogo21 = "/images/homepage/dell-logo.png";
-const imgRectangle26 = "/images/homepage/rectangle26.png";
-const imgRectangle48 = "/images/homepage/rectangle48.png";
+// API Base URL for images - the actual API base URL for fetching images
+// For API calls, we use the Next.js API route to avoid CORS issues
+const IMAGE_API_BASE_URL = process.env.NEXT_PUBLIC_IMAGE_API_URL || "https://api.martech-influence.com/api";
 
-// Content data structure
-interface ContentItem {
+// Category interface from API
+interface Category {
   id: number;
-  brandLogo: string;
-  brandName: string;
-  image: string;
-  title: string;
+  name: string;
+  slug: string;
   description: string;
-  categories: string[];
+  is_active: boolean;
+  created_at: string;
+  updated_at: string;
 }
 
-const contentItems: ContentItem[] = [
-  {
-    id: 1,
-    brandLogo: imgHoneyWell1,
-    brandName: "Honeywell",
-    image: imgRectangle13,
-    title: "Optimizing Performance in Industrial Environments: The Honeywell Granit™ Ultra Series",
-    description: "This eBook explores how Honeywell's Granit™ Ultra series empowers warehouses, manufacturing units, and logistics hubs to overcome scanning, durability, and operational challenges. It demonstrates how next-generation rugged scanners drive accuracy, speed, and reliability; helping businesses achieve peak performance under the toughest industrial conditions.",
-    categories: ["Data Center, Servers, Storage and Virtualization", "Data Management and Analytics", "Security", "Hardware"]
-  },
-  {
-    id: 2,
-    brandLogo: imgDellLogo21,
-    brandName: "Dell",
-    image: imgRectangle25,
-    title: "Meet Our New AI PC Family: A Unified Portfolio for the AI PC Era",
-    description: "This presentation introduces Dell's newly unified AI PC portfolio, simplified into three streamlined categories designed to meet the needs of users across work, creation, and play. Powered by Intel® Core Ultra processors, these devices embody Dell's commitment to performance, design, and AI-driven innovation for the next generation of computing.",
-    categories: ["Emerging Tech", "Hardware", "Technology", "IT Management", "Product Development & QA"]
-  },
-  {
-    id: 3,
-    brandLogo: imgDellLogo21,
-    brandName: "Dell",
-    image: imgRectangle26,
-    title: "Prepare for the Next Chapter in Your Business",
-    description: "This asset explores how small and mid-sized businesses can unlock AI-driven efficiency and resilience with Dell's new generation of AI PCs powered by Intel vPro® and Copilot in Windows. It emphasizes secure, manageable, and high-performing computing that enables growth, collaboration, and data protection in the AI era.",
-    categories: ["Data Management and Analytics", "Security", "Technology", "IT Management", "Hardware"]
-  },
-  {
-    id: 4,
-    brandLogo: imgDellLogo21,
-    brandName: "Dell",
-    image: imgRectangle36,
-    title: "Give Your Workforce a Boost with Trusted AI PCs",
-    description: "This eBook outlines how Dell AI PCs powered by Intel® Core™ Ultra processors are redefining workplace productivity and security. It explores how businesses can prepare for the next wave of hybrid work by upgrading to AI-ready devices that deliver faster performance, smarter collaboration, simplified management, and enhanced cyber resilience.",
-    categories: ["Data Management and Analytics", "IT Management", "Security", "Technology"]
-  },
-  {
-    id: 5,
-    brandLogo: imgDellLogo21,
-    brandName: "Dell",
-    image: imgRectangle46,
-    title: "Simplifying GenAI Development",
-    description: "This eBook demonstrates how NVIDIA AI Workbench, powered by Dell Pro Max high-performance PCs, helps developers and data scientists streamline the process of building, testing, and scaling generative AI (GenAI) models. It highlights how automated setup, workload portability, and integrated productivity tools simplify GenAI workflows from local development to enterprise-scale deployment.",
-    categories: ["Product Development & QA", "Emerging Tech", "Hardware", "Data Management and Analytics"]
-  },
-  {
-    id: 6,
-    brandLogo: imgDellLogo21,
-    brandName: "Dell",
-    image: imgRectangle48,
-    title: "10 Questions to Kickstart AI Initiatives",
-    description: "This guide helps organizations begin their AI journey by framing the right strategic, operational, and technical questions to align cross-functional teams. It breaks down the fundamentals of AI adoption—from defining goals and evaluating data readiness to assessing infrastructure and risk—while highlighting how Dell and NVIDIA solutions simplify deployment and accelerate results.",
-    categories: ["Data Management and Analytics", "IT Management", "Technology", "Hardware", "Emerging Tech"]
-  }
-];
+// Content data structure matching API response
+interface ContentItem {
+  id: number;
+  title: string;
+  short_title: string | null;
+  slug: string;
+  author_username: string;
+  author_full_name: string;
+  category: Category;
+  short_description: string;
+  banner_image: string;
+  mobile_image: string;
+  client_name: string | null;
+  client_industry: string | null;
+  estimated_time: string | null;
+  status: string;
+  is_featured: boolean;
+  is_pinned: boolean;
+  views_count: number;
+  likes_count: number;
+  shares_count: number;
+  downloads_count: number;
+  published_at: string;
+  created_at: string;
+  updated_at: string;
+}
 
-// Category definitions
-const primaryCategories = [
-  "Latest Content",
-  "Business Solutions",
-  "Cloud Hosting and Services",
-  "Data Center, Servers, Storage and Virtualization",
-  "Data Management and Analytics",
-  "Database",
-  "Emerging Tech",
-  "Hardware",
-  "IT Management",
-  "Mobile, Wireless and Telecommunication",
-  "Networking (inc wireless)",
-  "Product Development & QA",
-  "Security",
-  "Software Engineering, Programming, APIs & Services",
-  "Technology"
-];
+// API Response structure
+interface CaseStudiesResponse {
+  status: boolean;
+  status_code: number;
+  message_code: string;
+  message: string;
+  data: ContentItem[];
+  count: number;
+  next: string | null;
+  previous: string | null;
+}
+
+// "Latest Content" is a special filter that shows all items
+const LATEST_CONTENT_CATEGORY = "Latest Content";
+
+// Helper function to get full image URL
+const getImageUrl = (imagePath: string | null | undefined): string => {
+  if (!imagePath) return "";
+  if (imagePath.startsWith("http")) return imagePath;
+  return `${IMAGE_API_BASE_URL}${imagePath}`;
+};
+
 
 export default function Homepage() {
-  const [selectedCategory, setSelectedCategory] = useState<string>("Latest Content");
+  const [selectedCategory, setSelectedCategory] = useState<string>(LATEST_CONTENT_CATEGORY);
   const [searchQuery, setSearchQuery] = useState<string>("");
+  const [contentItems, setContentItems] = useState<ContentItem[]>([]);
+  const [categories, setCategories] = useState<string[]>([LATEST_CONTENT_CATEGORY]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+  const [mounted, setMounted] = useState<boolean>(false);
+
+  // Track mounted state to avoid hydration mismatch
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // Fetch case studies from API via Next.js API route (proxy to avoid CORS)
+  useEffect(() => {
+    const fetchCaseStudies = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        // Use Next.js API route to proxy the request and avoid CORS issues
+        const response = await fetch('/api/casestudy/case-studies');
+
+        if (!response.ok) {
+          throw new Error(`Failed to fetch case studies: ${response.statusText}`);
+        }
+
+        const data: CaseStudiesResponse = await response.json();
+
+        if (data.status && data.data) {
+          setContentItems(data.data);
+
+          // Extract unique category names from API response
+          const apiCategories = data.data
+            .map(item => item.category?.name)
+            .filter((name): name is string => Boolean(name) && name.trim() !== "");
+
+          // Get unique categories and sort them alphabetically
+          const uniqueCategories = Array.from(new Set(apiCategories)).sort((a, b) => a.localeCompare(b));
+
+          // Add "Latest Content" as the first option
+          setCategories([LATEST_CONTENT_CATEGORY, ...uniqueCategories]);
+        } else {
+          throw new Error(data.message || "Failed to fetch case studies");
+        }
+      } catch (err) {
+        console.error("Error fetching case studies:", err);
+        setError(err instanceof Error ? err.message : "An error occurred while fetching case studies");
+        // Keep default empty state or handle error UI
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchCaseStudies();
+  }, []);
 
   // Filter content based on selected category and search query
   const filteredContent = contentItems.filter((item) => {
     // If "Latest Content" is selected, show all items
-    const matchesCategory = selectedCategory === "Latest Content" || item.categories.includes(selectedCategory);
+    const matchesCategory = selectedCategory === LATEST_CONTENT_CATEGORY || item.category?.name === selectedCategory;
     const matchesSearch =
       searchQuery === "" ||
       item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      item.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      item.categories.some(cat => cat.toLowerCase().includes(searchQuery.toLowerCase()));
+      item.short_description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      item.category?.name.toLowerCase().includes(searchQuery.toLowerCase());
 
     return matchesCategory && matchesSearch;
   });
@@ -152,82 +173,105 @@ export default function Homepage() {
       {/* Category Filters */}
       <section className="w-full bg-[rgba(21,42,89,0.25)] py-12">
         <div className="max-w-[1920px] mx-auto px-4 xl:px-[80px] 2xl:px-[162px]">
-          {/* Category Filters */}
-          <div className="flex items-center justify-center gap-2 md:gap-4 mb-8 flex-wrap">
-            {primaryCategories.map((category) => (
-              <button
-                key={category}
-                onClick={() => setSelectedCategory(category)}
-                className={`h-[50px] rounded-[5px] px-2 md:px-4 flex items-center transition-colors whitespace-nowrap ${
-                  selectedCategory === category
-                    ? "bg-black"
-                    : "bg-transparent hover:bg-gray-200"
-                }`}
-              >
-                <span
-                  className={`font-montserrat font-medium text-[14px] md:text-[16px] lg:text-[18px] ${
-                    selectedCategory === category ? "text-white" : "text-black"
+          {/* Category Filters - Only render after mount and data is loaded to avoid hydration mismatch */}
+          {mounted && !loading && (
+            <div className="flex items-center justify-center gap-2 md:gap-4 mb-8 flex-wrap">
+              {categories.map((category) => (
+                <button
+                  key={category}
+                  onClick={() => setSelectedCategory(category)}
+                  className={`h-[50px] rounded-[5px] px-2 md:px-4 flex items-center transition-colors whitespace-nowrap ${
+                    selectedCategory === category
+                      ? "bg-black"
+                      : "bg-transparent hover:bg-gray-200"
                   }`}
                 >
-                  {category}
-                </span>
-              </button>
-            ))}
-          </div>
+                  <span
+                    className={`font-montserrat font-medium text-[14px] md:text-[16px] lg:text-[18px] ${
+                      selectedCategory === category ? "text-white" : "text-black"
+                    }`}
+                  >
+                    {category}
+                  </span>
+                </button>
+              ))}
+            </div>
+          )}
+
+          {/* Loading State */}
+          {loading && (
+            <div className="text-center py-12">
+              <p className="font-montserrat text-[20px] text-black">Loading case studies...</p>
+            </div>
+          )}
+
+          {/* Error State */}
+          {error && !loading && (
+            <div className="text-center py-12">
+              <p className="font-montserrat text-[20px] text-red-600">{error}</p>
+            </div>
+          )}
 
           {/* Content Grid */}
-          {filteredContent.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredContent.map((item) => (
-                <Link
-                  key={item.id}
-                  href="/detail"
-                  className="bg-[#f7f7f7] rounded-[5px] shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] p-6 hover:shadow-lg transition-shadow cursor-pointer block"
-                >
-                  <div className={`h-[34px] ${item.brandName === "Honeywell" ? "w-[180px]" : "w-[111px]"} relative mb-4`}>
+          {!loading && !error && (
+            <>
+              {filteredContent.length > 0 ? (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {filteredContent.map((item) => (
+                    <Link
+                      key={item.id}
+                      href={`/case-studies/${item.id}`}
+                      className="bg-[#f7f7f7] rounded-[5px] shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] p-6 hover:shadow-lg transition-shadow cursor-pointer block"
+                      >
+                      <div className={`h-[34px] ${item.mobile_image === "Honeywell" ? "w-[180px]" : "w-[171px]"} relative mb-4`}>
                     <Image
-                      src={item.brandLogo}
-                      alt={`${item.brandName} Logo`}
+                            src={getImageUrl(item.mobile_image)}
+                            alt={item.title}
                       fill
                       className="object-contain"
                     />
                   </div>
+
                   <div className={`w-full mb-4 relative flex items-center justify-center h-110`}>
                     <Image
-                      src={item.image}
+                      src={getImageUrl(item.banner_image)}
                       alt={item.title}
-
                       height={300}
                       width={300}
                       className="mx-auto rounded-[10px] shadow-[6px_8px_21.6px_1px_rgba(0,0,0,0.25)] object-contain"
                     />
                   </div>
+
+
                   <h3 className="font-montserrat font-medium text-[18px] md:text-[22px] text-black mb-4 leading-tight">
-                    {item.title}
-                  </h3>
-                  <p className="font-montserrat text-[12px] text-black mb-4 leading-relaxed">
-                    {item.description}
+                        {item.title}
+                      </h3>
+                      <p className="font-montserrat text-[12px] text-black mb-4 leading-relaxed">
+                      {item.short_description}
+                      </p>
+
+                      <div className="border-t border-gray-300 mb-4"></div>
+
+                      {/* Category Badge */}
+                      {item.category && (
+                        <div className="flex flex-wrap gap-2">
+                          <span className="bg-[#152a59] text-white text-[10px] md:text-[12px] px-2 py-1 rounded-[5px] font-montserrat">
+                            {item.category.name}
+                          </span>
+                        </div>
+                      )}
+
+                    </Link>
+                  ))}
+                </div>
+              ) : (
+                <div className="text-center py-12">
+                  <p className="font-montserrat text-[20px] text-black">
+                    No content found matching your criteria. Try selecting a different category or search term.
                   </p>
-                  <div className="border-t border-gray-300 mb-4"></div>
-                  <div className="flex flex-wrap gap-2">
-                    {item.categories.map((category) => (
-                      <span
-                        key={category}
-                        className="bg-[#152a59] text-white text-[10px] md:text-[12px] px-2 py-1 rounded-[5px] font-montserrat"
-                      >
-                        {category}
-                      </span>
-                    ))}
-                  </div>
-                </Link>
-              ))}
-            </div>
-          ) : (
-            <div className="text-center py-12">
-              <p className="font-montserrat text-[20px] text-black">
-                No content found matching your criteria. Try selecting a different category or search term.
-              </p>
-            </div>
+                </div>
+              )}
+            </>
           )}
         </div>
       </section>

@@ -1,18 +1,21 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  output: "export",
+  // Removed static export to enable API routes for CORS proxy
+  // If you need static export, you'll need to handle CORS differently
+  // output: "export",
 
-  // Fix CSS in static export
   trailingSlash: true,
 
   images: {
     unoptimized: true,
-  },
-
-  // Ensure CSS is properly handled in static export
-  experimental: {
-    optimizeCss: false,
+    // Allow images from the API domain
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'api.martech-influence.com',
+      },
+    ],
   },
 };
 
