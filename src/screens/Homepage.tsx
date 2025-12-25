@@ -35,7 +35,7 @@ const contentItems: ContentItem[] = [
     image: imgRectangle13,
     title: "Optimizing Performance in Industrial Environments: The Honeywell Granit™ Ultra Series",
     description: "This eBook explores how Honeywell's Granit™ Ultra series empowers warehouses, manufacturing units, and logistics hubs to overcome scanning, durability, and operational challenges. It demonstrates how next-generation rugged scanners drive accuracy, speed, and reliability; helping businesses achieve peak performance under the toughest industrial conditions.",
-    categories: ["Data Center", "Data Management and Analytics", "Security", "Storage and Virtualization", "Hardware"]
+    categories: ["Data Center, Servers, Storage and Virtualization", "Data Management and Analytics", "Security", "Hardware"]
   },
   {
     id: 2,
@@ -86,32 +86,31 @@ const contentItems: ContentItem[] = [
 
 // Category definitions
 const primaryCategories = [
-  "Data Center",
-  "Servers",
-  "Storage and Virtualization",
+  "Latest Content",
+  "Business Solutions",
+  "Cloud Hosting and Services",
+  "Data Center, Servers, Storage and Virtualization",
   "Data Management and Analytics",
-  "Security",
+  "Database",
+  "Emerging Tech",
   "Hardware",
-  "Emerging Tech",
-  "Technology",
+  "IT Management",
+  "Mobile, Wireless and Telecommunication",
+  "Networking (inc wireless)",
   "Product Development & QA",
-  "IT Management"
-];
-
-const secondaryCategories = [
-  "Emerging Tech",
-  "Technology",
-  "Product Development & QA",
-  "IT Management"
+  "Security",
+  "Software Engineering, Programming, APIs & Services",
+  "Technology"
 ];
 
 export default function Homepage() {
-  const [selectedCategory, setSelectedCategory] = useState<string>("Data Center");
+  const [selectedCategory, setSelectedCategory] = useState<string>("Latest Content");
   const [searchQuery, setSearchQuery] = useState<string>("");
 
   // Filter content based on selected category and search query
   const filteredContent = contentItems.filter((item) => {
-    const matchesCategory = item.categories.includes(selectedCategory);
+    // If "Latest Content" is selected, show all items
+    const matchesCategory = selectedCategory === "Latest Content" || item.categories.includes(selectedCategory);
     const matchesSearch =
       searchQuery === "" ||
       item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -153,20 +152,20 @@ export default function Homepage() {
       {/* Category Filters */}
       <section className="w-full bg-[rgba(21,42,89,0.25)] py-12">
         <div className="max-w-[1920px] mx-auto px-4 xl:px-[80px] 2xl:px-[162px]">
-          {/* Primary Category Filters */}
-          <div className="flex items-center justify-center gap-4 mb-8 flex-wrap">
+          {/* Category Filters */}
+          <div className="flex items-center justify-center gap-2 md:gap-4 mb-8 flex-wrap">
             {primaryCategories.map((category) => (
               <button
                 key={category}
                 onClick={() => setSelectedCategory(category)}
-                className={`h-[50px] rounded-[5px] px-2 md:px-4 flex items-center transition-colors ${
+                className={`h-[50px] rounded-[5px] px-2 md:px-4 flex items-center transition-colors whitespace-nowrap ${
                   selectedCategory === category
                     ? "bg-black"
                     : "bg-transparent hover:bg-gray-200"
                 }`}
               >
                 <span
-                  className={`font-montserrat font-medium text-[16px] md:text-[18px] ${
+                  className={`font-montserrat font-medium text-[14px] md:text-[16px] lg:text-[18px] ${
                     selectedCategory === category ? "text-white" : "text-black"
                   }`}
                 >
@@ -175,29 +174,6 @@ export default function Homepage() {
               </button>
             ))}
           </div>
-
-          {/* Secondary Category Filters */}
-          {/* <div className="flex items-center justify-center gap-4 mb-12 flex-wrap">
-            {secondaryCategories.map((category) => (
-              <button
-                key={category}
-                onClick={() => setSelectedCategory(category)}
-                className={`h-[50px] rounded-[5px] px-2 md:px-6 flex items-center transition-colors ${
-                  selectedCategory === category
-                    ? "bg-black"
-                    : "bg-transparent hover:bg-gray-200"
-                }`}
-              >
-                <span
-                  className={`font-montserrat font-medium text-[16px] md:text-[20px] ${
-                    selectedCategory === category ? "text-white" : "text-black"
-                  }`}
-                >
-                  {category}
-                </span>
-              </button>
-            ))}
-          </div> */}
 
           {/* Content Grid */}
           {filteredContent.length > 0 ? (
