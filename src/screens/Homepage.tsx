@@ -36,7 +36,8 @@ interface ContentItem {
   client_name: string | null;
   client_industry: string | null;
   estimated_time: string | null;
-  tags: string[];
+  //array tags
+  tags: { name: string }[];
   status: string;
   is_featured: boolean;
   is_pinned: boolean;
@@ -267,12 +268,10 @@ console.log(data);
 
                       {/* tag Badge */}
                       <div className="flex flex-wrap gap-2" >
-                      {item.tags?.map((tag: string) => (
-
-                          <span key={tag} className="bg-[#152a59] text-white text-[10px] md:text-[12px] px-2 py-1 rounded-[5px] font-montserrat">
+                      {item.tags?.map((tag: { name: string }) => (
+                          <span key={tag.name} className="bg-[#152a59] text-white text-[10px] md:text-[12px] px-2 py-1 rounded-[5px] font-montserrat">
                             {tag.name}
                           </span>
-
                       ))}
                        </div>
 
