@@ -355,7 +355,7 @@ export default function CaseStudyDetail({ id }: CaseStudyDetailProps) {
                   />
                 </div> */}
 
-                <div className="mb-6">
+                {/* <div className="mb-6">
                   <label htmlFor="email" className="font-montserrat text-[16px] md:text-[18px] text-black tracking-[0.18px] block mb-2">
                     Email <span className="text-red-500">*</span>
                   </label>
@@ -368,7 +368,7 @@ export default function CaseStudyDetail({ id }: CaseStudyDetailProps) {
                     className="bg-[rgba(50,88,155,0.36)] h-[50px] w-full rounded-[5px] px-4 font-montserrat text-[16px] text-black placeholder:text-[rgba(0,0,0,0.32)] outline-none"
                     required
                   />
-                </div>
+                </div> */}
 
                 {/* <div className="mb-6">
                   <label htmlFor="phone" className="font-montserrat text-[16px] md:text-[18px] text-black tracking-[0.18px] block mb-2">
