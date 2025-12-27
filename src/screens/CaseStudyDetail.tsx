@@ -20,6 +20,15 @@ interface Category {
   updated_at: string;
 }
 
+// Dynamic field interface from API
+interface DynamicField {
+  id: number;
+  field_name: string;
+  placeholder: string;
+  sequence: number;
+  is_active: boolean;
+}
+
 // Content data structure matching API response
 interface ContentItem {
   id: number;
@@ -48,6 +57,7 @@ interface ContentItem {
   published_at: string;
   created_at: string;
   updated_at: string;
+  dynamic_fields?: DynamicField[];
 }
 
 // API Response structure for single case study
@@ -65,6 +75,8 @@ const getImageUrl = (imagePath: string | null | undefined): string => {
   if (imagePath.startsWith("http")) return imagePath;
   return `${IMAGE_API_BASE_URL}${imagePath}`;
 };
+
+const API_BASE_URL = process.env.API_URL || process.env.NEXT_PUBLIC_API_URL || 'https://api.martech-influence.com/api';
 
 interface CaseStudyDetailProps {
   id: string;
@@ -95,7 +107,8 @@ export default function CaseStudyDetail({ id }: CaseStudyDetailProps) {
   // Form submission states
   const [submitting, setSubmitting] = useState<boolean>(false);
 
-  const API_BASE_URL = process.env.API_URL || process.env.NEXT_PUBLIC_API_URL || 'https://api.martech-influence.com/api';
+  // Dynamic field values - keyed by field id
+  const [dynamicFieldValues, setDynamicFieldValues] = useState<Record<number, string>>({});
 
   // Extract UTM parameters from URL
   useEffect(() => {
@@ -156,19 +169,24 @@ export default function CaseStudyDetail({ id }: CaseStudyDetailProps) {
     setSubmitting(true);
 
     try {
+      // Build dynamic fields payload
+      const dynamicFieldsPayload: Record<string, string> = {};
+      if (caseStudy.dynamic_fields) {
+        caseStudy.dynamic_fields
+          .filter((field) => field.is_active)
+          .forEach((field) => {
+            const value = dynamicFieldValues[field.id]?.trim() || "";
+            if (value) {
+              dynamicFieldsPayload[field.field_name] = value;
+            }
+          });
+      }
+
       const payload = {
         case_study: caseStudy.id,
-        name: name.trim(),
-        email: email.trim(),
-        phone: phone.trim() || undefined,
-        company: company.trim() || undefined,
-        job_title: jobTitle.trim() || undefined,
-        lead_source: leadSource,
-        message: message.trim() || "I would like to download this case study.",
-        utm_source: utmSource || undefined,
-        utm_medium: utmMedium || undefined,
-        utm_campaign: utmCampaign || undefined,
-        utm_refcode: utmRefcode || undefined,
+        data: {
+          ...dynamicFieldsPayload,
+        },
       };
 
       const response = await fetch("/api/casestudy/case-study-leads/", {
@@ -187,14 +205,10 @@ export default function CaseStudyDetail({ id }: CaseStudyDetailProps) {
 
       if (data.status) {
         toast.success("Thank you! Your request has been submitted successfully.");
-        // Reset form
-        setName("");
-        setEmail("");
-        setPhone("");
-        setCompany("");
-        setJobTitle("");
-        setMessage("I would like to download this case study.");
+
         setAgreed(false);
+        // Reset dynamic fields
+        setDynamicFieldValues({});
       } else {
         throw new Error(data.message || "Failed to submit form");
       }
@@ -293,6 +307,39 @@ export default function CaseStudyDetail({ id }: CaseStudyDetailProps) {
               </h3>
 
               <form onSubmit={handleSubmit} className="bg-[#f7f7f7] rounded-[5px] shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] p-8">
+                {/* Dynamic Fields */}
+                {caseStudy.dynamic_fields
+                  ?.filter((field) => field.is_active)
+                  .sort((a, b) => a.sequence - b.sequence)
+                  .map((field) => {
+                    const fieldId = `dynamic-field-${field.id}`;
+                    return (
+                      <div key={field.id} className="mb-6">
+                        <label
+                          htmlFor={fieldId}
+                          className="font-montserrat text-[16px] md:text-[18px] text-black tracking-[0.18px] block mb-2"
+                        >
+                          {field.field_name} <span className="text-red-500">*</span>
+                        </label>
+                        <input
+                          type="text"
+                          id={fieldId}
+                          data-name={field.field_name}
+                          value={dynamicFieldValues[field.id] || ""}
+                          onChange={(e) =>
+                            setDynamicFieldValues((prev) => ({
+                              ...prev,
+                              [field.id]: e.target.value,
+                            }))
+                          }
+                          placeholder={field.placeholder}
+                          className="bg-[rgba(50,88,155,0.36)] h-[50px] w-full rounded-[5px] px-4 font-montserrat text-[16px] text-black placeholder:text-[rgba(0,0,0,0.32)] outline-none"
+                          required
+                        />
+                      </div>
+                    );
+                  })}
+
                 {/* <div className="mb-6">
                   <label htmlFor="name" className="font-montserrat text-[16px] md:text-[18px] text-black tracking-[0.18px] block mb-2">
                     Full Name <span className="text-red-500">*</span>
