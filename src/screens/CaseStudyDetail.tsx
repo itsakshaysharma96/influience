@@ -31,6 +31,8 @@ interface ContentItem {
   category: Category;
   short_description: string;
   banner_image: string;
+  logo_image: string | null;
+  lp_image: string | null;
   mobile_image: string;
   client_name: string | null;
   client_industry: string | null;
@@ -93,6 +95,8 @@ export default function CaseStudyDetail({ id }: CaseStudyDetailProps) {
   // Form submission states
   const [submitting, setSubmitting] = useState<boolean>(false);
 
+  const API_BASE_URL = process.env.API_URL || process.env.NEXT_PUBLIC_API_URL || 'https://api.martech-influence.com/api';
+
   // Extract UTM parameters from URL
   useEffect(() => {
     if (globalThis.window !== undefined) {
@@ -109,7 +113,9 @@ export default function CaseStudyDetail({ id }: CaseStudyDetailProps) {
       try {
         setLoading(true);
         setError(null);
-        const response = await fetch(`/api/casestudy/case-studies/${id}`);
+        const apiUrl = `${API_BASE_URL.replace(/\/$/, '')}/casestudy/case-studies/${id}/`;
+
+        const response = await fetch(apiUrl);
 
         if (!response.ok) {
           throw new Error(`Failed to fetch case study: ${response.statusText}`);
@@ -235,10 +241,10 @@ export default function CaseStudyDetail({ id }: CaseStudyDetailProps) {
         {/* Left Side - Dark Blue Panel */}
         <div className="bg-[#152a59] h-[700px] w-full md:w-1/2 flex flex-col justify-center px-4 xl:px-[80px] 2xl:px-[162px]">
           {/* Client Logo */}
-          {caseStudy.mobile_image && (
+          {caseStudy.logo_image && (
             <div className="h-[134px] w-full max-w-[250px] relative mb-8">
               <Image
-                src={getImageUrl(caseStudy.mobile_image)}
+                src={getImageUrl(caseStudy.logo_image)}
                 alt={caseStudy.client_name || "Client Logo"}
                 fill
                 className="object-contain"
@@ -253,14 +259,16 @@ export default function CaseStudyDetail({ id }: CaseStudyDetailProps) {
 
         {/* Right Side - Image Panel */}
         <div className="w-full md:w-1/2 h-[700px] relative overflow-hidden">
-          <Image
-            src={getImageUrl(caseStudy.banner_image)}
-            alt={caseStudy.title}
-            fill
-            className="object-cover"
-            priority
-            unoptimized
-          />
+          {caseStudy.lp_image && (
+            <Image
+              src={getImageUrl(caseStudy.lp_image)}
+              alt={caseStudy.title}
+              fill
+              className="object-cover"
+              priority
+              unoptimized
+            />
+          )}
         </div>
       </section>
 
@@ -295,7 +303,7 @@ export default function CaseStudyDetail({ id }: CaseStudyDetailProps) {
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     placeholder="John Doe"
-                    className="bg-[rgba(50,88,155,0.36)] h-[50px] w-full rounded-[5px] px-4 font-montserrat text-[16px] text-black placeholder:text-[rgba(0,0,0,0.32)] outline-none"
+                    className="bg-[rgba(50,88,155,0.36)] h-[50px] w-full rounded-[5px] px-4 font-montserrat text-[16px] text-black placeholdext-[rgba(0,0,0,0.32)] outline-none"
                     required
                   />
                 </div> */}
@@ -353,7 +361,7 @@ export default function CaseStudyDetail({ id }: CaseStudyDetailProps) {
                     value={jobTitle}
                     onChange={(e) => setJobTitle(e.target.value)}
                     placeholder="Marketing Manager"
-                    className="bg-[rgba(50,88,155,0.36)] h-[50px] w-full rounded-[5px] px-4 font-montserrat text-[16px] text-black placeholder:text-[rgba(0,0,0,0.32)] outline-none"
+                    className="bg-[rgba(50,88,155,0.36)] h-[50px] w-full rounded-[5px] px-4 font-montserrat text-[16px] text-black plalder:text-[rgba(0,0,0,0.32)] outline-none"
                   />
                 </div> */}
 
@@ -370,8 +378,8 @@ export default function CaseStudyDetail({ id }: CaseStudyDetailProps) {
                     <option value="download">Download</option>
                     <option value="website">Website</option>
                     <option value="referral">Referral</option>
-                    <option value="social">Social Media</option>
-                    <option value="other">Other</option>
+                    <option value="social">Social Media</option
+                 option value="other">Other</option>
                   </select>
                 </div> */}
 
@@ -385,7 +393,7 @@ export default function CaseStudyDetail({ id }: CaseStudyDetailProps) {
                     onChange={(e) => setMessage(e.target.value)}
                     placeholder="I would like to download this case study."
                     rows={4}
-                    className="bg-[rgba(50,88,155,0.36)] w-full rounded-[5px] px-4 py-3 font-montserrat text-[16px] text-black placeholder:text-[rgba(0,0,0,0.32)] outline-none resize-none"
+                    className="bg-[rgba(50,88,155,0.36)] w-full rounded-[5px] px-4 py-3 font-montserrat text-[16px] textck placeholder:text-[rgba(0,0,0,0.32)] outline-none resize-none"
                   />
                 </div> */}
 

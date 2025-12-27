@@ -32,6 +32,8 @@ interface ContentItem {
   category: Category;
   short_description: string;
   banner_image: string;
+  logo_image: string | null;
+  lp_image: string | null;
   mobile_image: string;
   client_name: string | null;
   client_industry: string | null;
@@ -237,14 +239,16 @@ console.log(data);
                       href={`/case-studies/${item.id}`}
                       className="bg-[#f7f7f7] rounded-[5px] shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] p-6 hover:shadow-lg transition-shadow cursor-pointer block"
                       >
-                      <div className={`h-[34px] ${item.mobile_image === "Honeywell" ? "w-[180px]" : "w-[171px]"} relative mb-4`}>
-                    <Image
-                            src={getImageUrl(item.mobile_image)}
+                      {item.logo_image && (
+                        <div className="h-[34px] w-[171px] relative mb-4">
+                          <Image
+                            src={getImageUrl(item.logo_image)}
                             alt={item.title}
-                      fill
-                      className="object-contain"
-                    />
-                  </div>
+                            fill
+                            className="object-contain"
+                          />
+                        </div>
+                      )}
 
                   <div className={`w-full mb-4 relative flex items-center justify-center h-110`}>
                     <Image
