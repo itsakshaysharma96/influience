@@ -298,11 +298,11 @@ console.log(data);
           </h2>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
             <p className="font-montserrat font-medium text-[22px] md:text-[25px] text-white tracking-[0.3px] leading-relaxed">
-              Tech-Influence is a free-to-access digital library and content subscription platform built for professionals. It offers an extensive collection of whitepapers, eBooks, case studies, guides, and articles; all curated to inform, inspire, and empower decision-making across industries.
+              Martech-Influence is a free-to-access digital library and content subscription platform built for professionals. It offers an extensive collection of whitepapers, eBooks, case studies, guides, and articles; all curated to inform, inspire, and empower decision-making across industries.
             </p>
             <div className="space-y-6">
               <p className="font-montserrat text-[16px] md:text-[18px] text-white tracking-[0.2px] leading-relaxed">
-                You can explore our extensive library effortlessly using the search and topic filters to discover the most relevant insights for your field. Through our Preference Center, you have complete control over your communication and content choices — across Tech-Influence and our partner publications.
+                You can explore our extensive library effortlessly using the search and topic filters to discover the most relevant insights for your field. Through our Preference Center, you have complete control over your communication and content choices — across Martech-Influence and our partner publications.
               </p>
               <p className="font-montserrat text-[16px] md:text-[18px] text-white tracking-[0.2px] leading-relaxed">
                 All our resources are free to access and share. In return, we ask for your consent to share your professional details with the respective authors or content providers. To learn more about how we operate and handle data, you&apos;ll find clear, jargon-free information linked below.

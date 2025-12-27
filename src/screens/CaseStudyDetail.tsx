@@ -285,7 +285,7 @@ export default function CaseStudyDetail({ id }: CaseStudyDetailProps) {
               </h3>
 
               <form onSubmit={handleSubmit} className="bg-[#f7f7f7] rounded-[5px] shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] p-8">
-                <div className="mb-6">
+                {/* <div className="mb-6">
                   <label htmlFor="name" className="font-montserrat text-[16px] md:text-[18px] text-black tracking-[0.18px] block mb-2">
                     Full Name <span className="text-red-500">*</span>
                   </label>
@@ -298,7 +298,7 @@ export default function CaseStudyDetail({ id }: CaseStudyDetailProps) {
                     className="bg-[rgba(50,88,155,0.36)] h-[50px] w-full rounded-[5px] px-4 font-montserrat text-[16px] text-black placeholder:text-[rgba(0,0,0,0.32)] outline-none"
                     required
                   />
-                </div>
+                </div> */}
 
                 <div className="mb-6">
                   <label htmlFor="email" className="font-montserrat text-[16px] md:text-[18px] text-black tracking-[0.18px] block mb-2">
@@ -315,7 +315,7 @@ export default function CaseStudyDetail({ id }: CaseStudyDetailProps) {
                   />
                 </div>
 
-                <div className="mb-6">
+                {/* <div className="mb-6">
                   <label htmlFor="phone" className="font-montserrat text-[16px] md:text-[18px] text-black tracking-[0.18px] block mb-2">
                     Phone
                   </label>
@@ -327,9 +327,9 @@ export default function CaseStudyDetail({ id }: CaseStudyDetailProps) {
                     placeholder="+1234567890"
                     className="bg-[rgba(50,88,155,0.36)] h-[50px] w-full rounded-[5px] px-4 font-montserrat text-[16px] text-black placeholder:text-[rgba(0,0,0,0.32)] outline-none"
                   />
-                </div>
+                </div> */}
 
-                <div className="mb-6">
+                {/* <div className="mb-6">
                   <label htmlFor="company" className="font-montserrat text-[16px] md:text-[18px] text-black tracking-[0.18px] block mb-2">
                     Company
                   </label>
@@ -341,9 +341,9 @@ export default function CaseStudyDetail({ id }: CaseStudyDetailProps) {
                     placeholder="Tech Corp"
                     className="bg-[rgba(50,88,155,0.36)] h-[50px] w-full rounded-[5px] px-4 font-montserrat text-[16px] text-black placeholder:text-[rgba(0,0,0,0.32)] outline-none"
                   />
-                </div>
+                </div> */}
 
-                <div className="mb-6">
+                {/* <div className="mb-6">
                   <label htmlFor="job_title" className="font-montserrat text-[16px] md:text-[18px] text-black tracking-[0.18px] block mb-2">
                     Job Title
                   </label>
@@ -355,9 +355,9 @@ export default function CaseStudyDetail({ id }: CaseStudyDetailProps) {
                     placeholder="Marketing Manager"
                     className="bg-[rgba(50,88,155,0.36)] h-[50px] w-full rounded-[5px] px-4 font-montserrat text-[16px] text-black placeholder:text-[rgba(0,0,0,0.32)] outline-none"
                   />
-                </div>
+                </div> */}
 
-                <div className="mb-6">
+                {/* <div className="mb-6">
                   <label htmlFor="lead_source" className="font-montserrat text-[16px] md:text-[18px] text-black tracking-[0.18px] block mb-2">
                     Lead Source
                   </label>
@@ -373,9 +373,9 @@ export default function CaseStudyDetail({ id }: CaseStudyDetailProps) {
                     <option value="social">Social Media</option>
                     <option value="other">Other</option>
                   </select>
-                </div>
+                </div> */}
 
-                <div className="mb-6">
+                {/* <div className="mb-6">
                   <label htmlFor="message" className="font-montserrat text-[16px] md:text-[18px] text-black tracking-[0.18px] block mb-2">
                     Message
                   </label>
@@ -387,7 +387,7 @@ export default function CaseStudyDetail({ id }: CaseStudyDetailProps) {
                     rows={4}
                     className="bg-[rgba(50,88,155,0.36)] w-full rounded-[5px] px-4 py-3 font-montserrat text-[16px] text-black placeholder:text-[rgba(0,0,0,0.32)] outline-none resize-none"
                   />
-                </div>
+                </div> */}
 
                 <div className="flex items-start gap-3 mb-6">
                   <input
