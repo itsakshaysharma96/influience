@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Image from "next/image";
+import { toast } from "sonner";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 
@@ -68,11 +69,40 @@ interface CaseStudyDetailProps {
 }
 
 export default function CaseStudyDetail({ id }: CaseStudyDetailProps) {
+  // Form fields
+  const [name, setName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
+  const [phone, setPhone] = useState<string>("");
+  const [company, setCompany] = useState<string>("");
+  const [jobTitle, setJobTitle] = useState<string>("");
+  const [leadSource, setLeadSource] = useState<string>("download");
+  const [message, setMessage] = useState<string>("I would like to download this case study.");
   const [agreed, setAgreed] = useState<boolean>(false);
+
+  // UTM parameters
+  const [utmSource, setUtmSource] = useState<string>("");
+  const [utmMedium, setUtmMedium] = useState<string>("");
+  const [utmCampaign, setUtmCampaign] = useState<string>("");
+  const [utmRefcode, setUtmRefcode] = useState<string>("");
+
+  // Case study data and loading states
   const [caseStudy, setCaseStudy] = useState<ContentItem | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+
+  // Form submission states
+  const [submitting, setSubmitting] = useState<boolean>(false);
+
+  // Extract UTM parameters from URL
+  useEffect(() => {
+    if (globalThis.window !== undefined) {
+      const params = new URLSearchParams(globalThis.window.location.search);
+      setUtmSource(params.get("utm_source") || "");
+      setUtmMedium(params.get("utm_medium") || "");
+      setUtmCampaign(params.get("utm_campaign") || "");
+      setUtmRefcode(params.get("utm_refcode") || "");
+    }
+  }, []);
 
   useEffect(() => {
     const fetchCaseStudy = async () => {
@@ -86,7 +116,6 @@ export default function CaseStudyDetail({ id }: CaseStudyDetailProps) {
         }
 
         const data: CaseStudyResponse = await response.json();
-console.log(data);
         if (data.status && data.data) {
           setCaseStudy(data.data);
         } else {
@@ -105,10 +134,70 @@ console.log(data);
     }
   }, [id]);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle form submission
-    console.log("Form submitted:", { email, agreed, caseStudyId: id });
+
+    if (!agreed) {
+      toast.error("Please agree to the privacy policy to continue.");
+      return;
+    }
+
+    if (!caseStudy) {
+      toast.error("Case study data not loaded. Please refresh the page.");
+      return;
+    }
+
+    setSubmitting(true);
+
+    try {
+      const payload = {
+        case_study: caseStudy.id,
+        name: name.trim(),
+        email: email.trim(),
+        phone: phone.trim() || undefined,
+        company: company.trim() || undefined,
+        job_title: jobTitle.trim() || undefined,
+        lead_source: leadSource,
+        message: message.trim() || "I would like to download this case study.",
+        utm_source: utmSource || undefined,
+        utm_medium: utmMedium || undefined,
+        utm_campaign: utmCampaign || undefined,
+        utm_refcode: utmRefcode || undefined,
+      };
+
+      const response = await fetch("/api/casestudy/case-study-leads/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || `Failed to submit form: ${response.statusText}`);
+      }
+
+      if (data.status) {
+        toast.success("Thank you! Your request has been submitted successfully.");
+        // Reset form
+        setName("");
+        setEmail("");
+        setPhone("");
+        setCompany("");
+        setJobTitle("");
+        setMessage("I would like to download this case study.");
+        setAgreed(false);
+      } else {
+        throw new Error(data.message || "Failed to submit form");
+      }
+    } catch (err) {
+      console.error("Error submitting form:", err);
+      toast.error(err instanceof Error ? err.message : "An error occurred while submitting the form");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   if (loading) {
@@ -196,18 +285,109 @@ console.log(data);
               </h3>
 
               <form onSubmit={handleSubmit} className="bg-[#f7f7f7] rounded-[5px] shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] p-8">
-                <label htmlFor="email" className="font-montserrat text-[16px] md:text-[18px] text-black tracking-[0.18px] block mb-4">
-                  Your Email
-                </label>
-                <input
-                  type="email"
-                  id="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="your@email.com"
-                  className="bg-[rgba(50,88,155,0.36)] h-[65px] w-full rounded-[5px] px-4 font-montserrat text-[16px] text-black placeholder:text-[rgba(0,0,0,0.32)] outline-none mb-6"
-                  required
-                />
+                <div className="mb-6">
+                  <label htmlFor="name" className="font-montserrat text-[16px] md:text-[18px] text-black tracking-[0.18px] block mb-2">
+                    Full Name <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    id="name"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    placeholder="John Doe"
+                    className="bg-[rgba(50,88,155,0.36)] h-[50px] w-full rounded-[5px] px-4 font-montserrat text-[16px] text-black placeholder:text-[rgba(0,0,0,0.32)] outline-none"
+                    required
+                  />
+                </div>
+
+                <div className="mb-6">
+                  <label htmlFor="email" className="font-montserrat text-[16px] md:text-[18px] text-black tracking-[0.18px] block mb-2">
+                    Email <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="email"
+                    id="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="your@email.com"
+                    className="bg-[rgba(50,88,155,0.36)] h-[50px] w-full rounded-[5px] px-4 font-montserrat text-[16px] text-black placeholder:text-[rgba(0,0,0,0.32)] outline-none"
+                    required
+                  />
+                </div>
+
+                <div className="mb-6">
+                  <label htmlFor="phone" className="font-montserrat text-[16px] md:text-[18px] text-black tracking-[0.18px] block mb-2">
+                    Phone
+                  </label>
+                  <input
+                    type="tel"
+                    id="phone"
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
+                    placeholder="+1234567890"
+                    className="bg-[rgba(50,88,155,0.36)] h-[50px] w-full rounded-[5px] px-4 font-montserrat text-[16px] text-black placeholder:text-[rgba(0,0,0,0.32)] outline-none"
+                  />
+                </div>
+
+                <div className="mb-6">
+                  <label htmlFor="company" className="font-montserrat text-[16px] md:text-[18px] text-black tracking-[0.18px] block mb-2">
+                    Company
+                  </label>
+                  <input
+                    type="text"
+                    id="company"
+                    value={company}
+                    onChange={(e) => setCompany(e.target.value)}
+                    placeholder="Tech Corp"
+                    className="bg-[rgba(50,88,155,0.36)] h-[50px] w-full rounded-[5px] px-4 font-montserrat text-[16px] text-black placeholder:text-[rgba(0,0,0,0.32)] outline-none"
+                  />
+                </div>
+
+                <div className="mb-6">
+                  <label htmlFor="job_title" className="font-montserrat text-[16px] md:text-[18px] text-black tracking-[0.18px] block mb-2">
+                    Job Title
+                  </label>
+                  <input
+                    type="text"
+                    id="job_title"
+                    value={jobTitle}
+                    onChange={(e) => setJobTitle(e.target.value)}
+                    placeholder="Marketing Manager"
+                    className="bg-[rgba(50,88,155,0.36)] h-[50px] w-full rounded-[5px] px-4 font-montserrat text-[16px] text-black placeholder:text-[rgba(0,0,0,0.32)] outline-none"
+                  />
+                </div>
+
+                <div className="mb-6">
+                  <label htmlFor="lead_source" className="font-montserrat text-[16px] md:text-[18px] text-black tracking-[0.18px] block mb-2">
+                    Lead Source
+                  </label>
+                  <select
+                    id="lead_source"
+                    value={leadSource}
+                    onChange={(e) => setLeadSource(e.target.value)}
+                    className="bg-[rgba(50,88,155,0.36)] h-[50px] w-full rounded-[5px] px-4 font-montserrat text-[16px] text-black outline-none"
+                  >
+                    <option value="download">Download</option>
+                    <option value="website">Website</option>
+                    <option value="referral">Referral</option>
+                    <option value="social">Social Media</option>
+                    <option value="other">Other</option>
+                  </select>
+                </div>
+
+                <div className="mb-6">
+                  <label htmlFor="message" className="font-montserrat text-[16px] md:text-[18px] text-black tracking-[0.18px] block mb-2">
+                    Message
+                  </label>
+                  <textarea
+                    id="message"
+                    value={message}
+                    onChange={(e) => setMessage(e.target.value)}
+                    placeholder="I would like to download this case study."
+                    rows={4}
+                    className="bg-[rgba(50,88,155,0.36)] w-full rounded-[5px] px-4 py-3 font-montserrat text-[16px] text-black placeholder:text-[rgba(0,0,0,0.32)] outline-none resize-none"
+                  />
+                </div>
 
                 <div className="flex items-start gap-3 mb-6">
                   <input
@@ -229,9 +409,10 @@ console.log(data);
 
                 <button
                   type="submit"
-                  className="bg-[#152a59] h-[65px] w-full rounded-[5px] font-montserrat text-[16px] text-white tracking-[0.16px] hover:bg-[#1a3a6b] transition-colors"
+                  disabled={submitting}
+                  className="bg-[#152a59] h-[65px] w-full rounded-[5px] font-montserrat text-[16px] text-white tracking-[0.16px] hover:bg-[#1a3a6b] transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
                 >
-                  Get My Copy!
+                  {submitting ? "Submitting..." : "Get My Copy!"}
                 </button>
               </form>
             </div>

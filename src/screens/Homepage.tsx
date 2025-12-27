@@ -36,6 +36,7 @@ interface ContentItem {
   client_name: string | null;
   client_industry: string | null;
   estimated_time: string | null;
+  tags: string[];
   status: string;
   is_featured: boolean;
   is_pinned: boolean;
@@ -99,7 +100,7 @@ export default function Homepage() {
         }
 
         const data: CaseStudiesResponse = await response.json();
-
+console.log(data);
         if (data.status && data.data) {
           setContentItems(data.data);
 
@@ -132,11 +133,23 @@ export default function Homepage() {
   const filteredContent = contentItems.filter((item) => {
     // If "Latest Content" is selected, show all items
     const matchesCategory = selectedCategory === LATEST_CONTENT_CATEGORY || item.category?.name === selectedCategory;
-    const matchesSearch =
-      searchQuery === "" ||
-      item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      item.short_description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      item.category?.name.toLowerCase().includes(searchQuery.toLowerCase());
+
+    // If no search query, return all items matching the category
+    if (!searchQuery.trim()) {
+      return matchesCategory;
+    }
+
+    // Normalize search query for case-insensitive matching
+    const normalizedQuery = searchQuery.toLowerCase().trim();
+
+    // Search in title and description (main search criteria)
+    const matchesTitle = item.title?.toLowerCase().includes(normalizedQuery) || false;
+    const matchesDescription = item.short_description?.toLowerCase().includes(normalizedQuery) || false;
+
+    // Also search in category name for better discoverability
+    const matchesCategoryName = item.category?.name?.toLowerCase().includes(normalizedQuery) || false;
+
+    const matchesSearch = matchesTitle || matchesDescription || matchesCategoryName;
 
     return matchesCategory && matchesSearch;
   });
@@ -252,14 +265,16 @@ export default function Homepage() {
 
                       <div className="border-t border-gray-300 mb-4"></div>
 
-                      {/* Category Badge */}
-                      {item.category && (
-                        <div className="flex flex-wrap gap-2">
-                          <span className="bg-[#152a59] text-white text-[10px] md:text-[12px] px-2 py-1 rounded-[5px] font-montserrat">
-                            {item.category.name}
+                      {/* tag Badge */}
+                      <div className="flex flex-wrap gap-2" >
+                      {item.tags?.map((tag: string) => (
+
+                          <span key={tag} className="bg-[#152a59] text-white text-[10px] md:text-[12px] px-2 py-1 rounded-[5px] font-montserrat">
+                            {tag.name}
                           </span>
-                        </div>
-                      )}
+
+                      ))}
+                       </div>
 
                     </Link>
                   ))}
