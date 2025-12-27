@@ -18,7 +18,7 @@ export default function Header() {
       <div className="h-[40px] w-[150px] md:h-[62px] md:w-[200px] xl:w-[358px] relative">
         <Image
           src={logoPath}
-          alt="Tech Influence Logo"
+          alt="Martech Influence Logo"
           fill
           className="object-contain"
           priority

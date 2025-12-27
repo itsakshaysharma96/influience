@@ -10,7 +10,7 @@ const montserrat = Montserrat({
 });
 
 export const metadata: Metadata = {
-  title: "Tech Influence - Content Library",
+  title: "Martech Influence - Content Library",
   description: "A free-to-access digital library and content subscription platform built for professionals",
   icons: {
     icon: "/images/favicon.ico",

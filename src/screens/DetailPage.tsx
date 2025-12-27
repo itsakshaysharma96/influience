@@ -26,7 +26,7 @@ export default function DetailPage() {
         <Link href="/" className="h-[62px] w-[200px] md:w-[308px] relative">
           <Image
             src={logoPath}
-            alt="Tech Influence Logo"
+            alt="Martech Influence Logo"
             fill
             className="object-contain"
             priority
@@ -156,7 +156,7 @@ export default function DetailPage() {
       <footer className="bg-[#1d252f] w-full py-8">
         <div className="max-w-[1920px] mx-auto px-4 text-center">
           <p className="font-montserrat font-light text-[16px] md:text-[20px] text-white tracking-[0.2px] capitalize">
-            © 2025 Tech Influence All Rights Reserved
+            © 2025 Martech Influence All Rights Reserved
           </p>
         </div>
       </footer>
