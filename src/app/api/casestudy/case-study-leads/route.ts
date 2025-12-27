@@ -9,15 +9,15 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
 
     // Validate required fields
-    if (!body.case_study || !body.name || !body.email) {
-      return NextResponse.json(
-        {
-          status: false,
-          message: 'Missing required fields: case_study, name, and email are required',
-        },
-        { status: 400 }
-      );
-    }
+    // if (!body.case_study || !body.name || !body.email) {
+    //   return NextResponse.json(
+    //     {
+    //       status: false,
+    //       message: 'Missing required fields: case_study, name, and email are required',
+    //     },
+    //     { status: 400 }
+    //   );
+    // }
 
     // Construct the API URL - ensure no double slashes
     const apiUrl = `${API_BASE_URL.replace(/\/$/, '')}/casestudy/case-study-leads/`;
