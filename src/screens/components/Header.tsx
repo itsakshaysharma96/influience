@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 
 const imgSearchWhite2 = "/images/homepage/search-white.png";
 const logoPath = "/images/logo.png";
@@ -16,6 +17,7 @@ export default function Header() {
   return (
     <header className="bg-[#1d252f] min-h-[80px] md:h-[124px] w-full flex items-center justify-between px-4 xl:px-[80px] 2xl:px-[162px] sticky top-0 z-50">
       <div className="h-[40px] w-[150px] md:h-[62px] md:w-[200px] xl:w-[358px] relative">
+        <Link href="/">
         <Image
           src={logoPath}
           alt="Martech Influence Logo"
@@ -23,17 +25,20 @@ export default function Header() {
           className="object-contain"
           priority
         />
+        </Link>
       </div>
 
       {/* Desktop Navigation */}
       <nav className="hidden md:flex items-center gap-4 md:gap-8">
         <div className="w-[22px] h-[22px] md:w-[36px] md:h-[36px] relative cursor-pointer">
+        <Link href="/">
           <Image
             src={imgSearchWhite2}
             alt="Search"
             fill
             className="object-contain"
           />
+          </Link>
         </div>
         <a href="/about-us" className="font-montserrat text-[14px] md:text-[18px] text-white hover:opacity-80 transition-opacity cursor-pointer">About Us</a>
         {/* <span className="font-montserrat text-[14px] md:text-[18px] text-white hover:opacity-80 transition-opacity cursor-pointer">Blogs</span> */}
