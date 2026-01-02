@@ -89,6 +89,19 @@ export default function Homepage() {
     setMounted(true);
   }, []);
 
+  // Handle hash navigation to search section
+  useEffect(() => {
+    if (mounted && typeof window !== "undefined" && window.location.hash === "#search") {
+      // Small delay to ensure the page is fully rendered
+      setTimeout(() => {
+        const searchSection = document.getElementById("search");
+        if (searchSection) {
+          searchSection.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+      }, 100);
+    }
+  }, [mounted]);
+
   // Fetch case studies from API via Next.js API route (proxy to avoid CORS)
   useEffect(() => {
     const fetchCaseStudies = async () => {
@@ -166,7 +179,7 @@ console.log(data);
       <Header />
 
       {/* Hero Section */}
-      <section className="bg-[#152a59] min-h-[617px] w-full flex flex-col items-center justify-center px-4 py-16">
+      <section className="bg-[#152a59] min-h-[617px] w-full flex flex-col items-center justify-center px-4 py-16" id="search">
         <h1 className="font-montserrat font-semibold text-[32px] md:text-[50px] text-center text-white tracking-[0.5px] max-w-[865px] mb-8 leading-tight">
           Content Library of Technology Shaping Businesses Today!
         </h1>

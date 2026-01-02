@@ -3,15 +3,52 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
 
 const imgSearchWhite2 = "/images/homepage/search-white.png";
 const logoPath = "/images/logo.png";
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const pathname = usePathname();
+  const router = useRouter();
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
+  };
+
+  const handleSearchClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+
+    // If we're on the homepage, scroll to the search section
+    if (pathname === "/") {
+      const searchSection = document.getElementById("search");
+      if (searchSection) {
+        searchSection.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    } else {
+      // If we're on another page, navigate to homepage with hash
+      router.push("/#search");
+      // After navigation, scroll to the search section
+      setTimeout(() => {
+        const searchSection = document.getElementById("search");
+        if (searchSection) {
+          searchSection.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+      }, 100);
+    }
+
+    // Close mobile menu if open
+    if (isMenuOpen) {
+      setIsMenuOpen(false);
+    }
+  };
+
+  const handleSearchKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      handleSearchClick(e as unknown as React.MouseEvent);
+    }
   };
 
   return (
@@ -30,15 +67,20 @@ export default function Header() {
 
       {/* Desktop Navigation */}
       <nav className="hidden md:flex items-center gap-4 md:gap-8">
-        <div className="w-[22px] h-[22px] md:w-[36px] md:h-[36px] relative cursor-pointer">
-        <Link href="/">
+        <div
+          className="w-[22px] h-[22px] md:w-[36px] md:h-[36px] relative cursor-pointer"
+          onClick={handleSearchClick}
+          onKeyDown={handleSearchKeyDown}
+          role="button"
+          tabIndex={0}
+          aria-label="Search"
+        >
           <Image
             src={imgSearchWhite2}
             alt="Search"
             fill
             className="object-contain"
           />
-          </Link>
         </div>
         <a href="/about-us" className="font-montserrat text-[14px] md:text-[18px] text-white hover:opacity-80 transition-opacity cursor-pointer">About Us</a>
         {/* <span className="font-montserrat text-[14px] md:text-[18px] text-white hover:opacity-80 transition-opacity cursor-pointer">Blogs</span> */}
@@ -91,7 +133,14 @@ export default function Header() {
         }`}
       >
         <div className="flex flex-col p-6 gap-6">
-          <div className="w-[22px] h-[22px] relative cursor-pointer mb-2">
+          <div
+            className="w-[22px] h-[22px] relative cursor-pointer mb-2"
+            onClick={handleSearchClick}
+            onKeyDown={handleSearchKeyDown}
+            role="button"
+            tabIndex={0}
+            aria-label="Search"
+          >
             <Image
               src={imgSearchWhite2}
               alt="Search"

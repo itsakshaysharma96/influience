@@ -129,7 +129,7 @@ connect you with the right audience.
 
               <p className="font-montserrat text-[16px] md:text-[18px] text-black tracking-[0.2px] leading-relaxed mb-8">
               ou can use the form on this page to send us a message. If your inquiry is
-urgent, you can also call us +44 20 4525 6570.
+urgent, you can also call us <a href="tel:+447423208797">+44 742-320-8797</a>.
               </p>
 
               <p className="font-montserrat text-[16px] md:text-[18px] text-black tracking-[0.2px] leading-relaxed mb-8">
