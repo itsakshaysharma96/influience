@@ -58,6 +58,8 @@ interface ContentItem {
   created_at: string;
   updated_at: string;
   dynamic_fields?: DynamicField[];
+  external_link?: string | null;
+  downloadable_file?: string | null;
 }
 
 // API Response structure for single case study
@@ -129,7 +131,6 @@ export default function CaseStudyDetail({ id }: CaseStudyDetailProps) {
         const apiUrl = `${API_BASE_URL.replace(/\/$/, '')}/casestudy/case-studies/${id}/`;
 
         const response = await fetch(apiUrl);
-
         if (!response.ok) {
           throw new Error(`Failed to fetch case study: ${response.statusText}`);
         }
@@ -209,6 +210,27 @@ export default function CaseStudyDetail({ id }: CaseStudyDetailProps) {
         setAgreed(false);
         // Reset dynamic fields
         setDynamicFieldValues({});
+
+        // Handle external_link or downloadable_file after successful submission
+        if (caseStudy.external_link && caseStudy.external_link.trim() !== '') {
+          // Open external link in a new tab
+          window.open(caseStudy.external_link, '_blank', 'noopener,noreferrer');
+        } else if (caseStudy.downloadable_file && caseStudy.downloadable_file.trim() !== '') {
+          // Trigger download for downloadable file
+          const fileUrl = caseStudy.downloadable_file.startsWith('http')
+            ? caseStudy.downloadable_file
+            : `${IMAGE_API_BASE_URL}${caseStudy.downloadable_file}`;
+
+          // Create a temporary anchor element to trigger download
+          const link = document.createElement('a');
+          link.href = fileUrl;
+          link.download = ''; // Let browser determine filename
+          link.target = '_blank';
+          link.rel = 'noopener noreferrer';
+          document.body.appendChild(link);
+          link.click();
+          link.remove();
+        }
       } else {
         throw new Error(data.message || "Failed to submit form");
       }
