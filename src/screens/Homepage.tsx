@@ -250,7 +250,7 @@ console.log(data);
                     <Link
                       key={item.id}
                       href={`/case-studies/${item.id}`}
-                      className="bg-[#f7f7f7] rounded-[5px] shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] p-6 hover:shadow-lg transition-shadow cursor-pointer block"
+                      className="bg-[#f7f7f7] rounded-[5px] shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] p-6 hover:shadow-lg transition-shadow cursor-pointer block flex flex-col h-full"
                       >
                       {item.logo_image && (
                         <div className="h-[34px] w-[171px] relative mb-4">
@@ -277,14 +277,14 @@ console.log(data);
                   <h3 className="font-montserrat font-medium text-[18px] md:text-[22px] text-black mb-4 leading-tight">
                         {item.title}
                       </h3>
-                      <p className="font-montserrat text-[12px] text-black mb-4 leading-relaxed">
+                      <p className="font-montserrat text-[12px] text-black mb-4 leading-relaxed flex-grow">
                       {item.short_description}
                       </p>
 
                       <div className="border-t border-gray-300 mb-4"></div>
 
-                      {/* tag Badge */}
-                      <div className="flex flex-wrap gap-2" >
+                      {/* tag Badge - Fixed Footer */}
+                      <div className="flex flex-wrap gap-2 border border-gray-300 rounded-[5px] p-3 min-h-[60px] items-start" >
                       {item.tags?.map((tag: { name: string }) => (
                           <span key={tag.name} className="bg-[#152a59] text-white text-[10px] md:text-[12px] px-2 py-1 rounded-[5px] font-montserrat">
                             {tag.name}

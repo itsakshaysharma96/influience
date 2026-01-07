@@ -128,13 +128,13 @@ connect you with the right audience.
               <h3 className="font-montserrat font-bold text-[20px] md:text-[24px] text-black tracking-[0.2px] mb-4">Talk to us about anything else</h3>
 
               <p className="font-montserrat text-[16px] md:text-[18px] text-black tracking-[0.2px] leading-relaxed mb-8">
-              ou can use the form on this page to send us a message. If your inquiry is
+              You can use the form on this page to send us a message. If your inquiry is
 urgent, you can also call us <a href="tel:+447423208797">+44 742-320-8797</a>.
               </p>
 
-              <p className="font-montserrat text-[16px] md:text-[18px] text-black tracking-[0.2px] leading-relaxed mb-8">
+              {/* <p className="font-montserrat text-[16px] md:text-[18px] text-black tracking-[0.2px] leading-relaxed mb-8">
               If you are a user or email recipient looking to update your contact preferences,
-              it’s usually quickest to do so via our Martechinfluencepreference center.              </p>
+              it’s usually quickest to do so via our Martechinfluencepreference center.              </p> */}
 
 
             </div>
