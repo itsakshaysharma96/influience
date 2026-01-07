@@ -78,29 +78,13 @@ const getImageUrl = (imagePath: string | null | undefined): string => {
   return `${IMAGE_API_BASE_URL}${imagePath}`;
 };
 
-const API_BASE_URL = process.env.API_URL || process.env.NEXT_PUBLIC_API_URL || 'https://api.martech-influence.com/api';
-
 interface CaseStudyDetailProps {
   slug?: string;
   id?: string;
 }
 
 export default function CaseStudyDetail({ slug, id }: CaseStudyDetailProps) {
-  // Form fields
-  const [name, setName] = useState<string>("");
-  const [email, setEmail] = useState<string>("");
-  const [phone, setPhone] = useState<string>("");
-  const [company, setCompany] = useState<string>("");
-  const [jobTitle, setJobTitle] = useState<string>("");
-  const [leadSource, setLeadSource] = useState<string>("download");
-  const [message, setMessage] = useState<string>("I would like to download this case study.");
   const [agreed, setAgreed] = useState<boolean>(false);
-
-  // UTM parameters
-  const [utmSource, setUtmSource] = useState<string>("");
-  const [utmMedium, setUtmMedium] = useState<string>("");
-  const [utmCampaign, setUtmCampaign] = useState<string>("");
-  const [utmRefcode, setUtmRefcode] = useState<string>("");
 
   // Case study data and loading states
   const [caseStudy, setCaseStudy] = useState<ContentItem | null>(null);
@@ -112,17 +96,6 @@ export default function CaseStudyDetail({ slug, id }: CaseStudyDetailProps) {
 
   // Dynamic field values - keyed by field id
   const [dynamicFieldValues, setDynamicFieldValues] = useState<Record<number, string>>({});
-
-  // Extract UTM parameters from URL
-  useEffect(() => {
-    if (globalThis.window !== undefined) {
-      const params = new URLSearchParams(globalThis.window.location.search);
-      setUtmSource(params.get("utm_source") || "");
-      setUtmMedium(params.get("utm_medium") || "");
-      setUtmCampaign(params.get("utm_campaign") || "");
-      setUtmRefcode(params.get("utm_refcode") || "");
-    }
-  }, []);
 
   useEffect(() => {
     const fetchCaseStudy = async () => {
@@ -325,12 +298,16 @@ export default function CaseStudyDetail({ slug, id }: CaseStudyDetailProps) {
           <div className="flex items-start justify-between gap-12">
             {/* Left Column - Description */}
             <div className="max-w-[813px]">
-              <p className="font-montserrat text-[16px] md:text-[20px] text-black tracking-[0.2px] leading-relaxed mb-12">
-                <div dangerouslySetInnerHTML={{ __html: caseStudy.content }} />
-              </p>
-
-
-
+              {caseStudy.short_description && (
+                <p className="font-montserrat text-[16px] md:text-[20px] text-black tracking-[0.2px] leading-relaxed mb-8">
+                  {caseStudy.short_description}
+                </p>
+              )}
+              {caseStudy.content && (
+                <div className="font-montserrat text-[16px] md:text-[20px] text-black tracking-[0.2px] leading-relaxed mb-12">
+                  <div dangerouslySetInnerHTML={{ __html: caseStudy.content }} />
+                </div>
+              )}
             </div>
 
             {/* Right Column - Form */}
@@ -372,110 +349,6 @@ export default function CaseStudyDetail({ slug, id }: CaseStudyDetailProps) {
                       </div>
                     );
                   })}
-
-                {/* <div className="mb-6">
-                  <label htmlFor="name" className="font-montserrat text-[16px] md:text-[18px] text-black tracking-[0.18px] block mb-2">
-                    Full Name <span className="text-red-500">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    id="name"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    placeholder="John Doe"
-                    className="bg-[rgba(50,88,155,0.36)] h-[50px] w-full rounded-[5px] px-4 font-montserrat text-[16px] text-black placeholdext-[rgba(0,0,0,0.32)] outline-none"
-                    required
-                  />
-                </div> */}
-
-                {/* <div className="mb-6">
-                  <label htmlFor="email" className="font-montserrat text-[16px] md:text-[18px] text-black tracking-[0.18px] block mb-2">
-                    Email <span className="text-red-500">*</span>
-                  </label>
-                  <input
-                    type="email"
-                    id="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="your@email.com"
-                    className="bg-[rgba(50,88,155,0.36)] h-[50px] w-full rounded-[5px] px-4 font-montserrat text-[16px] text-black placeholder:text-[rgba(0,0,0,0.32)] outline-none"
-                    required
-                  />
-                </div> */}
-
-                {/* <div className="mb-6">
-                  <label htmlFor="phone" className="font-montserrat text-[16px] md:text-[18px] text-black tracking-[0.18px] block mb-2">
-                    Phone
-                  </label>
-                  <input
-                    type="tel"
-                    id="phone"
-                    value={phone}
-                    onChange={(e) => setPhone(e.target.value)}
-                    placeholder="+1234567890"
-                    className="bg-[rgba(50,88,155,0.36)] h-[50px] w-full rounded-[5px] px-4 font-montserrat text-[16px] text-black placeholder:text-[rgba(0,0,0,0.32)] outline-none"
-                  />
-                </div> */}
-
-                {/* <div className="mb-6">
-                  <label htmlFor="company" className="font-montserrat text-[16px] md:text-[18px] text-black tracking-[0.18px] block mb-2">
-                    Company
-                  </label>
-                  <input
-                    type="text"
-                    id="company"
-                    value={company}
-                    onChange={(e) => setCompany(e.target.value)}
-                    placeholder="Tech Corp"
-                    className="bg-[rgba(50,88,155,0.36)] h-[50px] w-full rounded-[5px] px-4 font-montserrat text-[16px] text-black placeholder:text-[rgba(0,0,0,0.32)] outline-none"
-                  />
-                </div> */}
-
-                {/* <div className="mb-6">
-                  <label htmlFor="job_title" className="font-montserrat text-[16px] md:text-[18px] text-black tracking-[0.18px] block mb-2">
-                    Job Title
-                  </label>
-                  <input
-                    type="text"
-                    id="job_title"
-                    value={jobTitle}
-                    onChange={(e) => setJobTitle(e.target.value)}
-                    placeholder="Marketing Manager"
-                    className="bg-[rgba(50,88,155,0.36)] h-[50px] w-full rounded-[5px] px-4 font-montserrat text-[16px] text-black plalder:text-[rgba(0,0,0,0.32)] outline-none"
-                  />
-                </div> */}
-
-                {/* <div className="mb-6">
-                  <label htmlFor="lead_source" className="font-montserrat text-[16px] md:text-[18px] text-black tracking-[0.18px] block mb-2">
-                    Lead Source
-                  </label>
-                  <select
-                    id="lead_source"
-                    value={leadSource}
-                    onChange={(e) => setLeadSource(e.target.value)}
-                    className="bg-[rgba(50,88,155,0.36)] h-[50px] w-full rounded-[5px] px-4 font-montserrat text-[16px] text-black outline-none"
-                  >
-                    <option value="download">Download</option>
-                    <option value="website">Website</option>
-                    <option value="referral">Referral</option>
-                    <option value="social">Social Media</option
-                 option value="other">Other</option>
-                  </select>
-                </div> */}
-
-                {/* <div className="mb-6">
-                  <label htmlFor="message" className="font-montserrat text-[16px] md:text-[18px] text-black tracking-[0.18px] block mb-2">
-                    Message
-                  </label>
-                  <textarea
-                    id="message"
-                    value={message}
-                    onChange={(e) => setMessage(e.target.value)}
-                    placeholder="I would like to download this case study."
-                    rows={4}
-                    className="bg-[rgba(50,88,155,0.36)] w-full rounded-[5px] px-4 py-3 font-montserrat text-[16px] textck placeholder:text-[rgba(0,0,0,0.32)] outline-none resize-none"
-                  />
-                </div> */}
 
                 <div className="flex items-start gap-3 mb-6">
                   <input
