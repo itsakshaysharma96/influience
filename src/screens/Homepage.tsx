@@ -284,7 +284,7 @@ console.log(data);
                       <div className="border-t border-gray-300 mb-4"></div>
 
                       {/* tag Badge - Fixed Footer */}
-                      <div className="flex flex-wrap gap-2 border border-gray-300 rounded-[5px] p-3 min-h-[60px] items-start" >
+                      <div className="flex flex-wrap gap-2 min-h-[30px] items-start" >
                       {item.tags?.map((tag: { name: string }) => (
                           <span key={tag.name} className="bg-[#152a59] text-white text-[10px] md:text-[12px] px-2 py-1 rounded-[5px] font-montserrat">
                             {tag.name}
