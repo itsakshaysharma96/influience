@@ -81,10 +81,11 @@ const getImageUrl = (imagePath: string | null | undefined): string => {
 const API_BASE_URL = process.env.API_URL || process.env.NEXT_PUBLIC_API_URL || 'https://api.martech-influence.com/api';
 
 interface CaseStudyDetailProps {
-  id: string;
+  slug?: string;
+  id?: string;
 }
 
-export default function CaseStudyDetail({ id }: CaseStudyDetailProps) {
+export default function CaseStudyDetail({ slug, id }: CaseStudyDetailProps) {
   // Form fields
   const [name, setName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
@@ -128,7 +129,17 @@ export default function CaseStudyDetail({ id }: CaseStudyDetailProps) {
       try {
         setLoading(true);
         setError(null);
-        const apiUrl = `${API_BASE_URL.replace(/\/$/, '')}/casestudy/case-studies/${id}/`;
+
+        // Use slug if available, otherwise fall back to id
+        const identifier = slug || id;
+        if (!identifier) {
+          throw new Error("Slug or ID is required");
+        }
+
+        // Use Next.js API route to proxy the request
+        const apiUrl = slug
+          ? `/api/casestudy/case-studies/slug/${slug}`
+          : `/api/casestudy/case-studies/${id}`;
 
         const response = await fetch(apiUrl);
         if (!response.ok) {
@@ -149,10 +160,10 @@ export default function CaseStudyDetail({ id }: CaseStudyDetailProps) {
       }
     };
 
-    if (id) {
+    if (slug || id) {
       fetchCaseStudy();
     }
-  }, [id]);
+  }, [slug, id]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

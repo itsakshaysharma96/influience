@@ -249,8 +249,8 @@ console.log(data);
                   {filteredContent.map((item) => (
                     <Link
                       key={item.id}
-                      href={`/case-studies/${item.id}`}
-                      className="bg-[#f7f7f7] rounded-[5px] shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] p-6 hover:shadow-lg transition-shadow cursor-pointer block flex flex-col h-full"
+                      href={`/${item.slug}`}
+                      className="bg-[#f7f7f7] rounded-[5px] shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] p-6 hover:shadow-lg transition-shadow cursor-pointer flex flex-col h-full"
                       >
                       {item.logo_image && (
                         <div className="h-[34px] w-[171px] relative mb-4">
