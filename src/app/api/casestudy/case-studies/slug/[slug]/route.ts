@@ -57,6 +57,13 @@ export async function GET(
 
     const data = await response.json();
 
+    // Log the response for debugging
+    console.log('API Response for slug:', slug, 'Data structure:', {
+      hasData: !!data.data,
+      isArray: Array.isArray(data.data),
+      dataKeys: data.data && !Array.isArray(data.data) ? Object.keys(data.data) : 'N/A'
+    });
+
     // Handle case where API returns a list (when using query parameters)
     // vs a single object (when using direct path)
     let responseData = data;
@@ -64,10 +71,58 @@ export async function GET(
       // Find the case study with matching slug
       const matchingCaseStudy = data.data.find((item: { slug?: string }) => item.slug === slug);
       if (matchingCaseStudy) {
-        responseData = {
-          ...data,
-          data: matchingCaseStudy
-        };
+        // If we got a list response, the item might not have full content
+        // Fetch the full detail using the ID to get complete data including content
+        if (matchingCaseStudy.id) {
+          try {
+            const detailUrl = `${API_BASE_URL.replace(/\/$/, '')}/casestudy/case-studies/${matchingCaseStudy.id}/`;
+            const detailResponse = await fetch(detailUrl, {
+              method: 'GET',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              cache: 'no-store',
+            });
+
+            if (detailResponse.ok) {
+              const detailData = await detailResponse.json();
+              console.log('Detail fetch response for ID:', matchingCaseStudy.id, {
+                hasData: !!detailData.data,
+                hasContent: detailData.data?.content ? 'Yes' : 'No',
+                contentLength: detailData.data?.content?.length || 0,
+                dataKeys: detailData.data ? Object.keys(detailData.data) : 'N/A'
+              });
+              if (detailData.status && detailData.data) {
+                // Use the full detail data which includes content
+                responseData = detailData;
+              } else {
+                // Fallback to the list item if detail fetch fails
+                responseData = {
+                  ...data,
+                  data: matchingCaseStudy
+                };
+              }
+            } else {
+              // Fallback to the list item if detail fetch fails
+              responseData = {
+                ...data,
+                data: matchingCaseStudy
+              };
+            }
+          } catch (detailError) {
+            console.error('Error fetching case study detail:', detailError);
+            // Fallback to the list item if detail fetch fails
+            responseData = {
+              ...data,
+              data: matchingCaseStudy
+            };
+          }
+        } else {
+          responseData = {
+            ...data,
+            data: matchingCaseStudy
+          };
+        }
       } else {
         return NextResponse.json(
           {

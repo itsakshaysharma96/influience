@@ -45,6 +45,14 @@ export async function GET(
 
     const data = await response.json();
 
+    // Log the response for debugging
+    console.log('API Response for ID:', id, 'Data structure:', {
+      hasData: !!data.data,
+      dataKeys: data.data ? Object.keys(data.data) : 'N/A',
+      hasContent: data.data?.content ? 'Yes' : 'No',
+      contentLength: data.data?.content?.length || 0
+    });
+
     return NextResponse.json(data, {
       status: 200,
       headers: {
