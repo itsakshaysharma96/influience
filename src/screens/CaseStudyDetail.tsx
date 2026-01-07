@@ -122,6 +122,7 @@ export default function CaseStudyDetail({ slug, id }: CaseStudyDetailProps) {
         const data: CaseStudyResponse = await response.json();
         if (data.status && data.data) {
           setCaseStudy(data.data);
+          console.log(data.data)
         } else {
           throw new Error(data.message || "Failed to fetch case study");
         }
