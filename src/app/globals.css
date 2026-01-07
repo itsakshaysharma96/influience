@@ -120,6 +120,42 @@ body {
   }
 }
 
+.tinymc p{
+  margin: 10px 0 10px;
+}
+.tinymc h1{
+  margin: 10px 0 10px;
+  font-size: 24px;
+}
+.tinymc h2{
+  margin: 10px 0 10px;
+  font-size: 22px;
+}
+.tinymc h3{
+  margin: 10px 0 10px;
+  font-size: 20px;
+}
+.tinymc h4{
+  margin: 10px 0 10px;
+  font-size: 18px;
+}
+.tinymc h5{
+  margin: 10px 0 10px;
+  font-size: 16px;
+}
+.tinymc h6{
+  margin: 10px 0 10px;
+  font-size: 14px;
+}
+.tinymc ul{
+  margin: 10px 0 10px;
+  font-size: 16px;
+}
+
+.tinymc li{
+  margin: 10px 0 10px;
+  font-size: 16px;
+}
 .privacy-policy-content ul {
   font-family: var(--font-montserrat), sans-serif;
   font-size: 1rem;

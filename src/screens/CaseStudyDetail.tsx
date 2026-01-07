@@ -299,13 +299,9 @@ export default function CaseStudyDetail({ slug, id }: CaseStudyDetailProps) {
           <div className="flex items-start justify-between gap-12">
             {/* Left Column - Description */}
             <div className="max-w-[813px]">
-              {caseStudy.short_description && (
-                <p className="font-montserrat text-[16px] md:text-[20px] text-black tracking-[0.2px] leading-relaxed mb-8">
-                  {caseStudy.short_description}
-                </p>
-              )}
+
               {caseStudy.content && (
-                <div className="font-montserrat text-[16px] md:text-[20px] text-black tracking-[0.2px] leading-relaxed mb-12">
+                <div className="font-montserrat mb-12 tinymc">
                   <div dangerouslySetInnerHTML={{ __html: caseStudy.content }} />
                 </div>
               )}
