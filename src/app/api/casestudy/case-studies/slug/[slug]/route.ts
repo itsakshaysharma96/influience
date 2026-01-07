@@ -21,17 +21,28 @@ export async function GET(
       );
     }
 
-    // Construct the API URL - ensure no double slashes
-    // Assuming the API supports fetching by slug
-    const apiUrl = `${API_BASE_URL.replace(/\/$/, '')}/casestudy/case-studies/${slug}/`;
-    const response = await fetch(apiUrl, {
+    // Construct the API URL - try query parameter approach first (more common for slug-based fetching)
+    // Try with query parameter: /casestudy/case-studies/?slug=...
+    const apiUrlWithQuery = `${API_BASE_URL.replace(/\/$/, '')}/casestudy/case-studies/?slug=${encodeURIComponent(slug)}`;
+    let response = await fetch(apiUrlWithQuery, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
       },
-      // Don't cache to ensure fresh data
       cache: 'no-store',
     });
+
+    // If query parameter approach fails, try direct path approach
+    if (!response.ok) {
+      const apiUrlDirect = `${API_BASE_URL.replace(/\/$/, '')}/casestudy/case-studies/${slug}/`;
+      response = await fetch(apiUrlDirect, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        cache: 'no-store',
+      });
+    }
 
     if (!response.ok) {
       return NextResponse.json(
@@ -46,7 +57,29 @@ export async function GET(
 
     const data = await response.json();
 
-    return NextResponse.json(data, {
+    // Handle case where API returns a list (when using query parameters)
+    // vs a single object (when using direct path)
+    let responseData = data;
+    if (data.data && Array.isArray(data.data)) {
+      // Find the case study with matching slug
+      const matchingCaseStudy = data.data.find((item: { slug?: string }) => item.slug === slug);
+      if (matchingCaseStudy) {
+        responseData = {
+          ...data,
+          data: matchingCaseStudy
+        };
+      } else {
+        return NextResponse.json(
+          {
+            status: false,
+            message: 'Case study not found',
+          },
+          { status: 404 }
+        );
+      }
+    }
+
+    return NextResponse.json(responseData, {
       status: 200,
       headers: {
         'Access-Control-Allow-Origin': '*',
@@ -67,7 +100,7 @@ export async function GET(
   }
 }
 
-export async function OPTIONS(request: NextRequest) {
+export async function OPTIONS(_request: NextRequest) {
   return new NextResponse(null, {
     status: 200,
     headers: {
