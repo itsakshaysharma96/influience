@@ -253,7 +253,7 @@ console.log(data);
                       className="bg-[#f7f7f7] rounded-[5px] shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] p-6 hover:shadow-lg transition-shadow cursor-pointer flex flex-col h-full"
                       >
                       {item.logo_image && (
-                        <div className="h-[34px] w-[171px] relative mb-4">
+                        <div className="h-[40px] w-[171px] relative mb-4">
                           <Image
                             src={getImageUrl(item.logo_image)}
                             alt={item.title}
