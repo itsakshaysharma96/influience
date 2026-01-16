@@ -46,10 +46,7 @@ export default function AboutUsPage() {
                   <span className="">Simple to access</span>{" "}
                   - typically, we only need you to confirm an email address, and we&apos;ll deliver your content or event link to your inbox within minutes
                 </li>
-                <li>
-                  <span className="">Easy to change preferences or opt out of</span>{" "}
-                  - simply tell us at <a href="https://preferences.martech.influence./" className="text-blue-600 hover:underline">https://preferences.martech.influence./</a>
-                </li>
+
               </ul>
             </div>
 
