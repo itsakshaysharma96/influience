@@ -8,7 +8,7 @@ export default function Footer() {
         </div>
         <div className="flex flex-col items-start md:items-end gap-4">
           {/* <a href="/preferences" className="font-montserrat font-light text-[16px] md:text-[20px] text-white tracking-[0.2px] capitalize hover:opacity-80 transition-opacity">Update Your Preferences</a> */}
-          <p className="font-montserrat font-light text-[16px] md:text-[20px] text-white tracking-[0.2px] capitalize">© 2025 Martech Influence All Rights Reserved</p>
+          <p className="font-montserrat font-light text-[16px] md:text-[20px] text-white tracking-[0.2px] capitalize">© 2026 Martech Influence All Rights Reserved</p>
           <a href="/privacy" className="font-montserrat font-light text-[16px] md:text-[20px] text-white tracking-[0.2px] capitalize hover:opacity-80 transition-opacity">Privacy Notice</a>
         </div>
       </div>
