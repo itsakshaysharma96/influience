@@ -84,6 +84,11 @@ export default function Homepage() {
   const [error, setError] = useState<string | null>(null);
   const [mounted, setMounted] = useState<boolean>(false);
 
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [totalPages, setTotalPages] = useState<number>(1);
+  const [nextPageUrl, setNextPageUrl] = useState<string | null>(null);
+  const [prevPageUrl, setPrevPageUrl] = useState<string | null>(null);
+
   // Track mounted state to avoid hydration mismatch
   useEffect(() => {
     setMounted(true);
@@ -104,46 +109,62 @@ export default function Homepage() {
 
   // Fetch case studies from API via Next.js API route (proxy to avoid CORS)
   useEffect(() => {
-    const fetchCaseStudies = async () => {
+    const fetchCaseStudies = async (page = 1) => {
       try {
         setLoading(true);
         setError(null);
-        // Use Next.js API route to proxy the request and avoid CORS issues
-        const response = await fetch('/api/casestudy/case-studies');
+
+        const response = await fetch(
+          `/api/casestudy/case-studies?page=${page}`
+        );
 
         if (!response.ok) {
-          throw new Error(`Failed to fetch case studies: ${response.statusText}`);
+          throw new Error(`Failed to fetch case studies`);
         }
 
         const data: CaseStudiesResponse = await response.json();
-console.log(data);
-        if (data.status && data.data) {
-          setContentItems(data.data);
 
-          // Extract unique category names from API response
+        if (data.status) {
+          setContentItems(data.data);
+          setNextPageUrl(data.next);
+          setPrevPageUrl(data.previous);
+          setCurrentPage(page);
+
+          // If backend page size is 10
+          setTotalPages(Math.ceil(data.count / 20));
+
+          // Categories (same as before)
           const apiCategories = data.data
             .map(item => item.category?.name)
-            .filter((name): name is string => Boolean(name) && name.trim() !== "");
+            .filter((name): name is string => Boolean(name));
 
-          // Get unique categories and sort them alphabetically
-          const uniqueCategories = Array.from(new Set(apiCategories)).sort((a, b) => a.localeCompare(b));
-
-          // Add "Latest Content" as the first option
+          const uniqueCategories = Array.from(new Set(apiCategories)).sort();
           setCategories([LATEST_CONTENT_CATEGORY, ...uniqueCategories]);
-        } else {
-          throw new Error(data.message || "Failed to fetch case studies");
         }
       } catch (err) {
-        console.error("Error fetching case studies:", err);
-        setError(err instanceof Error ? err.message : "An error occurred while fetching case studies");
-        // Keep default empty state or handle error UI
+        setError("Error fetching case studies");
       } finally {
         setLoading(false);
       }
     };
 
-    fetchCaseStudies();
-  }, []);
+    fetchCaseStudies(currentPage);
+  }, [currentPage]);
+
+  const handleNextPage = () => {
+    if (nextPageUrl && currentPage < totalPages) {
+      setCurrentPage(prev => prev + 1);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  };
+
+  const handlePrevPage = () => {
+    if (prevPageUrl && currentPage > 1) {
+      setCurrentPage(prev => prev - 1);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  };
+
 
   // Filter content based on selected category and search query
   const filteredContent = contentItems.filter((item) => {
@@ -209,16 +230,14 @@ console.log(data);
                 <button
                   key={category}
                   onClick={() => setSelectedCategory(category)}
-                  className={`h-[50px] rounded-[5px] px-2 md:px-4 flex items-center transition-colors whitespace-nowrap ${
-                    selectedCategory === category
-                      ? "bg-black"
-                      : "bg-transparent hover:bg-gray-200"
-                  }`}
+                  className={`h-[50px] rounded-[5px] px-2 md:px-4 flex items-center transition-colors whitespace-nowrap ${selectedCategory === category
+                    ? "bg-black"
+                    : "bg-transparent hover:bg-gray-200"
+                    }`}
                 >
                   <span
-                    className={`font-montserrat font-medium text-[14px] md:text-[16px] lg:text-[18px] ${
-                      selectedCategory === category ? "text-white" : "text-black"
-                    }`}
+                    className={`font-montserrat font-medium text-[14px] md:text-[16px] lg:text-[18px] ${selectedCategory === category ? "text-white" : "text-black"
+                      }`}
                   >
                     {category}
                   </span>
@@ -245,56 +264,88 @@ console.log(data);
           {!loading && !error && (
             <>
               {filteredContent.length > 0 ? (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {filteredContent.map((item) => (
-                    <Link
-                      key={item.id}
-                      href={`/case-studies/${item.slug}`}
-                      className="bg-[#f7f7f7] rounded-[5px] shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] p-6 hover:shadow-lg transition-shadow cursor-pointer flex flex-col h-full"
+                <>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {filteredContent.map((item) => (
+                      <Link
+                        key={item.id}
+                        href={`/case-studies/${item.slug}`}
+                        className="bg-[#f7f7f7] rounded-[5px] shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] p-6 hover:shadow-lg transition-shadow cursor-pointer flex flex-col h-full"
                       >
-                      {item.logo_image && (
-                        <div className="h-[40px] w-[171px] relative mb-4">
+                        {item.logo_image && (
+                          <div className="h-[40px] w-[171px] relative mb-4">
+                            <Image
+                              src={getImageUrl(item.logo_image)}
+                              alt={item.title}
+                              fill
+                              className="object-contain"
+                            />
+                          </div>
+                        )}
+
+                        <div className={`w-full mb-4 relative flex items-center justify-center h-100`}>
                           <Image
-                            src={getImageUrl(item.logo_image)}
+                            src={getImageUrl(item.banner_image)}
                             alt={item.title}
-                            fill
-                            className="object-contain"
+                            height={300}
+                            width={300}
+                            className="mx-auto rounded-[10px] shadow-[6px_8px_21.6px_1px_rgba(0,0,0,0.25)] object-contain"
                           />
                         </div>
-                      )}
 
-                  <div className={`w-full mb-4 relative flex items-center justify-center h-110`}>
-                    <Image
-                      src={getImageUrl(item.banner_image)}
-                      alt={item.title}
-                      height={300}
-                      width={300}
-                      className="mx-auto rounded-[10px] shadow-[6px_8px_21.6px_1px_rgba(0,0,0,0.25)] object-contain"
-                    />
+
+                        <h3 className="font-montserrat font-medium text-[18px] md:text-[22px] text-black mb-4 leading-tight line-clamp-3 h-20">
+                          {item.title}
+                        </h3>
+                        <p className="font-montserrat text-[12px] text-black mb-4 leading-relaxed flex-grow line-clamp-3 overflow-hidden relative">
+                          {item.short_description}
+                        </p>
+
+                        <div className="border-t border-gray-300 mb-4"></div>
+
+                        {/* tag Badge - Fixed Footer */}
+                        <div className="flex flex-wrap gap-2 min-h-[30px] items-start" >
+                          {item.tags?.map((tag: { name: string }) => (
+                            <span key={tag.name} className="bg-[#152a59] text-white text-[10px] md:text-[12px] px-2 py-1 rounded-[5px] font-montserrat">
+                              {tag.name}
+                            </span>
+                          ))}
+                        </div>
+
+                      </Link>
+                    ))}
                   </div>
 
+                  {/* Pagination */}
+                  {!loading && !error && totalPages > 1 && (
+                    <div className="flex items-center justify-center gap-4 mt-12">
 
-                  <h3 className="font-montserrat font-medium text-[18px] md:text-[22px] text-black mb-4 leading-tight">
-                        {item.title}
-                      </h3>
-                      <p className="font-montserrat text-[12px] text-black mb-4 leading-relaxed flex-grow">
-                      {item.short_description}
-                      </p>
+                      <button
+                        onClick={handlePrevPage}
+                        disabled={!prevPageUrl}
+                        className={`px-4 py-2 rounded bg-black text-white font-montserrat
+        ${!prevPageUrl ? "opacity-50 cursor-not-allowed" : "hover:bg-gray-800"}`}
+                      >
+                        Previous
+                      </button>
 
-                      <div className="border-t border-gray-300 mb-4"></div>
+                      <span className="font-montserrat text-[16px] text-black">
+                        Page <strong>{currentPage}</strong> of <strong>{totalPages}</strong>
+                      </span>
 
-                      {/* tag Badge - Fixed Footer */}
-                      <div className="flex flex-wrap gap-2 min-h-[30px] items-start" >
-                      {item.tags?.map((tag: { name: string }) => (
-                          <span key={tag.name} className="bg-[#152a59] text-white text-[10px] md:text-[12px] px-2 py-1 rounded-[5px] font-montserrat">
-                            {tag.name}
-                          </span>
-                      ))}
-                       </div>
+                      <button
+                        onClick={handleNextPage}
+                        disabled={!nextPageUrl}
+                        className={`px-4 py-2 rounded bg-black text-white font-montserrat
+        ${!nextPageUrl ? "opacity-50 cursor-not-allowed" : "hover:bg-gray-800"}`}
+                      >
+                        Next
+                      </button>
 
-                    </Link>
-                  ))}
-                </div>
+                    </div>
+                  )}
+
+                </>
               ) : (
                 <div className="text-center py-12">
                   <p className="font-montserrat text-[20px] text-black">

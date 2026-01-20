@@ -1,20 +1,25 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from "next/server";
 
-// Use server-side environment variable (without NEXT_PUBLIC_ prefix)
-// This keeps the API URL secure and not exposed to the client
-const API_BASE_URL = process.env.API_URL || process.env.NEXT_PUBLIC_API_URL || 'https://api.martech-influence.com/api';
+const API_BASE_URL =
+  process.env.API_URL ||
+  process.env.NEXT_PUBLIC_API_URL ||
+  "https://api.martech-influence.com/api";
 
 export async function GET(request: NextRequest) {
   try {
-    // Construct the API URL - ensure no double slashes
-    const apiUrl = `${API_BASE_URL.replace(/\/$/, '')}/casestudy/case-studies/`;
+    // Read query params from frontend request
+    const { searchParams } = new URL(request.url);
+    const page = searchParams.get("page") || "1";
+
+    // Build backend API URL with pagination
+    const apiUrl = `${API_BASE_URL.replace(/\/$/, "")}/casestudy/case-studies/?page=${page}`;
+
     const response = await fetch(apiUrl, {
-      method: 'GET',
+      method: "GET",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
-      // Don't cache to ensure fresh data
-      cache: 'no-store',
+      cache: "no-store",
     });
 
     if (!response.ok) {
@@ -22,7 +27,7 @@ export async function GET(request: NextRequest) {
         {
           status: false,
           message: `API responded with status ${response.status}`,
-          error: response.statusText
+          error: response.statusText,
         },
         { status: response.status }
       );
@@ -30,35 +35,17 @@ export async function GET(request: NextRequest) {
 
     const data = await response.json();
 
-    return NextResponse.json(data, {
-      status: 200,
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Methods': 'GET, OPTIONS',
-        'Access-Control-Allow-Headers': 'Content-Type',
-      },
-    });
+    return NextResponse.json(data, { status: 200 });
   } catch (error) {
-    console.error('Error proxying case studies request:', error);
+    console.error("Error proxying case studies request:", error);
+
     return NextResponse.json(
       {
         status: false,
-        message: 'Failed to fetch case studies',
-        error: error instanceof Error ? error.message : 'Unknown error'
+        message: "Failed to fetch case studies",
+        error: error instanceof Error ? error.message : "Unknown error",
       },
       { status: 500 }
     );
   }
 }
-
-export async function OPTIONS(request: NextRequest) {
-  return new NextResponse(null, {
-    status: 200,
-    headers: {
-      'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Methods': 'GET, OPTIONS',
-      'Access-Control-Allow-Headers': 'Content-Type',
-    },
-  });
-}
-
